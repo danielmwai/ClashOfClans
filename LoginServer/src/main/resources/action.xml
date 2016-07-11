@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aslan-app>
+    <action-map>
+        <!-- 服务器内部通信，不对客户端开放 -->
+        <action name="1008" bean="registerChannelAction" />
+        <!-- 登录模块 -->
+        <action name="1001" bean="userLoginAction" />
+        <action name="1007" bean="AreaListAction" />
+    </action-map>
+</aslan-app>

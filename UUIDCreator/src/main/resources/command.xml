@@ -1,0 +1,7 @@
+<message>
+    <!--<entry id="1008" messageName="RegisterChannelRequest" />
+    -->
+    <entry id="1600" messageName="CreateUUIDRequest" />
+    <entry id="41600" messageName="CreateUUIDResponse" />	
+</message>
+

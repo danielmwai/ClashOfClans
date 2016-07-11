@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <import resource="jdbc.xml" />
+    <bean id="jmsConnectionFactory"
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${jms.brokerUrl}" />
+    </bean>
+
+    <bean id="connectionFactory"
+          class="org.apache.activemq.pool.PooledConnectionFactory">
+        <constructor-arg index="0"
+                         ref="jmsConnectionFactory" />
+    </bean>
+    <!-- 接收信息监听 -->
+    <bean id="receiveCurrencyListener" class="com.bw.jms.receiver.ReceiveCurrencyListener">
+        <property name="currencyDAO" ref="currencyDAO" />
+    </bean>
+    <!-- 接收信息监听 -->
+    <!-- 接收信息容器 -->
+    <bean class="com.bw.jms.receiverContainer.ReceiveCurrencyContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.currency.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="receiveCurrencyListener" />
+    </bean>
+    <!-- 接收信息容器 -->
+</beans>

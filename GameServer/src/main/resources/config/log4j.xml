@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%5p %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] (%c:%L) - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="userLog" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="user" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%5p %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] (%c:%L) - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="farmCache_appender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="gameserver" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%5p %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] (%c:%L) - %m%n" />
+        </layout>
+    </appender>
+    <logger name="com.bw.application.manager.impl.UserManagerImpl"
+            additivity="false">
+        <level value="debug"></level>
+        <appender-ref ref="userLog"></appender-ref>
+    </logger>
+    
+    <logger name="com.bw.application.server.ClientServerHeart"
+            additivity="false">
+        <level value="debug"></level>
+        <appender-ref ref="userLog"></appender-ref>
+    </logger>
+    
+    
+    <logger name="com.bw.active.MinaServer"
+            additivity="false">
+        <level value="debug"></level>
+        <appender-ref ref="userLog"></appender-ref>
+    </logger>
+    
+    <logger name="com.bw." additivity="false">
+        <level value="debug" />
+        <appender-ref ref="farmCache_appender" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.test." additivity="false">
+        <level value="debug" />
+        <appender-ref ref="farmCache_appender" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.commonSocket" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="farmCache_appender" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework" additivity="false">
+        <level value="error" />
+        <appender-ref ref="farmCache_appender" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.apache" additivity="false">
+        <level value="error" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.google.code.yanf4j" additivity="false">
+        <level value="error" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <!--	<logger name="net.rubyeye.xmemcached.impl" additivity="false">-->
+    <logger name="net.rubyeye.xmemcached" additivity="false">
+        <level value="error" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.mchange" additivity="false">
+        <level value="error" />
+        <appender-ref ref="farmCache_appender" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+</log4j:configuration>   

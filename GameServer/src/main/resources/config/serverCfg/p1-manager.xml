@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans>
+        <bean id="offLineManager" class="com.bw.application.manager.impl.OffLineManagerImpl"
+              init-method="start" destroy-method="stop">
+            <property name="battleLineDAOImpl" ref="BattleLineDAOImpl"></property>
+            <property name="bwUserCacheDAOImpl" ref="BwUserCacheDAOImpl"></property>
+            <property name="bwUserMapDataCacheDAOImpl" ref="BwUserMapDataCacheDAOImpl" />
+            <property name="bwUserBattleStatisticsDaoImpl" ref="BwUserBattleStatisticsDaoImpl"></property>
+            <property name="appConfig" ref="appConfig"></property>
+        </bean>
+        <bean id="battleManagerImpl" class="com.bw.application.manager.impl.BattleManagerImpl">
+            <property name="offLineManager" ref="offLineManager" />
+            <property name="bwUserCacheDAOImpl" ref="BwUserCacheDAOImpl"></property>
+            <property name="bwUserMapDataCacheDAOImpl" ref="BwUserMapDataCacheDAOImpl" />
+            <property name="bwMineCollectorCacheDAOImpl" ref="BwMineCollectorCacheDAOImpl" />
+            <property name="bwMineCollectorAllCacheDAOImpl" ref="BwMineCollectorAllCacheDAOImpl" />
+            <property name="bwBattleCacheDAOImpl" ref="BwBattleCacheDAOImpl"></property>
+            <property name="bwUserBattleStatisticsDaoImpl" ref="BwUserBattleStatisticsDaoImpl"></property>
+            <property name="bwUserCharacterCacheDAOImpl" ref="BwUserCharacterCacheDAOImpl" />
+            <property name="bwBarrackCacheDAOImpl" ref="BwBarrackCacheDAOImpl" />
+            <property name="bwUserSpellCacheDAOImpl" ref="BwUserSpellCacheDAOImpl" />
+            <property name="battleLineDAOImpl" ref="BattleLineDAOImpl" />
+            <property name="userManagerImpl" ref="UserManagerImpl" />
+            <!-- jms add操作 开始 -->
+            <property name="bwUserVOUpdateJMS" ref="BwUserVOUpdateJMS" />
+            <property name="bwBattleVOUpdateJMS" ref="BwBattleVOUpdateJMS" />
+            <property name="bwMineCollectorAllVOUpdateJMS" ref="BwMineCollectorAllVOUpdateJMS" />
+            <property name="bwMineCollectorVOUpdateJMS" ref="BwMineCollectorVOUpdateJMS" />
+            <property name="bwUserBattleStatisticsVOUpdateJMS" ref="BwUserBattleStatisticsVOUpdateJMS" />
+            <property name="bwUserCharacterVOUpdateJMS" ref="BwUserCharacterVOUpdateJMS" />
+            <property name="bwUserSpellVOUpdateJMS" ref="BwUserSpellVOUpdateJMS" />
+            <!-- jms add操作 结束 -->
+        </bean>
+        <bean id="UserManagerImpl" class="com.bw.application.manager.impl.UserManagerImpl">
+            <property name="bwUserCacheDAOImpl" ref="BwUserCacheDAOImpl"></property>
+            <property name="bwUserCharacterCacheDAOImpl" ref="BwUserCharacterCacheDAOImpl" />
+            <property name="bwUserMapDataCacheDAOImpl" ref="BwUserMapDataCacheDAOImpl" />
+            <property name="bwBarrackCacheDAOImpl" ref="BwBarrackCacheDAOImpl" />
+            <property name="bwClansCharacterRequestCacheDAOImpl" ref="BwClansCharacterRequestCacheDAOImpl" />
+            <property name="bwMineCollectorCacheDAOImpl" ref="BwMineCollectorCacheDAOImpl" />
+            <property name="bwMineCollectorAllCacheDAOImpl" ref="BwMineCollectorAllCacheDAOImpl" />
+            <property name="bwUserSpellCacheDAOImpl" ref="BwUserSpellCacheDAOImpl" />
+            <property name="battleLineDAOImpl" ref="BattleLineDAOImpl" />
+            <property name="bwBattleCacheDAOImpl" ref="BwBattleCacheDAOImpl" />
+            <property name="offLineManagerImpl" ref="offLineManager" />
+            <property name="bwSpellCacheDAOImpl" ref="BwSpellCacheDAOImpl" />
+            <property name="bwUserVOUpdateJMS" ref="BwUserVOUpdateJMS" />
+            <property name="bwMineCollectorAllVOUpdateJMS" ref="BwMineCollectorAllVOUpdateJMS" />
+            <property name="bwMineCollectorVOUpdateJMS" ref="BwMineCollectorVOUpdateJMS" />
+            <property name="bwUserCharacterVOUpdateJMS" ref="BwUserCharacterVOUpdateJMS" />
+            <property name="bwUserSpellVOUpdateJMS" ref="BwUserSpellVOUpdateJMS" />
+            <property name="bwUserMapDataVOUpdateJMS" ref="BwUserMapDataVOUpdateJMS" />
+            <property name="bwUserBankCacheDAOImpl" ref="BwUserBankCacheDAOImpl" />
+            <property name="bwPlantUserCacheDAOImpl" ref="BwPlantUserCacheDAOImpl" />
+            <property name="actionLog" ref="actionLog"></property>
+        </bean>
+        <bean id="actionLog" class="com.bw.log.ActionLog">
+            <property name="senderUtil" ref="SenderUtil"/>
+        </bean>
+        <bean id="resManager" class="org.springframework.remoting.rmi.RmiServiceExporter">
+            <property name="serviceName" value="resManager"></property>
+            <property name="service">
+                <bean class="com.bw.application.resourceManager.ResManagerImpl" />
+            </property>
+            <property name="registryPort" value="${rmi.port}"></property>
+            <property name="serviceInterface"
+                      value="com.bw.application.resourceManager.ResManager" />
+        </bean>
+        <bean id="PVPOrderManagerImpl" class="com.bw.application.manager.impl.PVPOrderManagerImpl">
+            <property name="bwUserCacheDAOImpl" ref="BwUserCacheDAOImpl">
+            </property>
+        </bean>
+    </beans>
+    
+</beans>

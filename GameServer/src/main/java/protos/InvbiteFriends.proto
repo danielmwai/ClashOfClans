@@ -1,0 +1,24 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "InvbiteFriends";
+
+message InvbiteFriendsRequest
+{
+
+	required string	mailId = 1;//	邀请人邮箱地址
+	required string	mailed_invbited = 2;//	被邀请人邮箱地址
+	optional int32	cropsId = 3;//	农作物ID
+
+
+	
+	
+}
+
+message InvbiteFriendsResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	sysinfo = 2;//系统消息
+	optional int32	percentRate = 3;//农作物增益百分比(120=120%)
+}

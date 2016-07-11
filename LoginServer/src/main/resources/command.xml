@@ -1,0 +1,13 @@
+<message>
+    <!-- 游戏服务器注册 -->
+    <entry id="1008" messageName="RegisterChannelRequest" />
+    <!-- 用户登录-->
+    <entry id="1001" messageName="UserLoginRequest" />
+    <entry id="41001" messageName="UserLoginResponse" />	
+    <!-- 用户登录-->
+    <!-- 获取分区列表 开始 -->
+    <entry id="1007" messageName="AreaListRequest" />
+    <entry id="41007" messageName="AreaListResponse" />	
+    <!-- 获取分区列表 结束 -->
+</message>
+

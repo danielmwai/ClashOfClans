@@ -1,0 +1,26 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "ImageUpload";
+
+message ImageUploadRequest
+{
+
+	required string	mailAddress = 1; //Mail地址
+	optional IoData	ioData = 2; //有效数据
+
+	message IoData
+	{
+		repeated sint32	data = 1; //有效数据数组
+
+	}
+	
+}
+
+message ImageUploadResponse
+{
+	optional sint32	result = 1; //异常状态码表 4
+	optional string	info = 2; //系统消息
+
+}

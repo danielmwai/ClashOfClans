@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    
+    <beans>
+        <bean id="minaServer" destroy-method="stop" class="com.bw.active.MinaServer">
+            <property name="appConfig">
+                <ref bean="appConfig" />
+            </property>
+		
+            <property name="protocolCodecFactory">
+                <ref bean="protocolCodecFactory" />
+            </property>
+
+            <property name="address">
+                <value>188.166.20.234</value>
+            </property>
+
+            <property name="port">
+                <value>7777</value>
+            </property>
+		
+            <property name="connectionInterval">
+                <value>200</value>
+            </property>
+
+            <property name="handler">
+                <ref bean="minaIoHandler" />
+            </property>
+		
+            <property name="readerIdleMaxTime">
+                <!-- 读端空闲最大时间：秒 -->
+                <value>0</value>
+            </property>
+		
+            <property name="writerIdleMaxTime">
+                <!-- 写端空闲最大时间：秒 -->
+                <value>0</value>
+            </property>
+		
+            <property name="bothIdleMaxTime">
+                <!-- 双端空闲时间最大时间：秒 -->
+                <value>180</value>
+            </property>
+        </bean>
+    </beans>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aslan-app>
+    <action-map>
+        <action name="305" bean="UploadBattleFlowAction" />
+        <action name="306" bean="IoFileAction" />
+    </action-map>
+</aslan-app>

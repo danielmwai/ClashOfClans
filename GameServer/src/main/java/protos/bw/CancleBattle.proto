@@ -1,0 +1,13 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="CancleBattle";
+message CancleBattleRequest
+{
+	required    string mailAddress = 1;
+}
+
+message CancleBattleResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aslan-app>
+    <action-map>
+        <action name="1600" bean="CreateUUIDAction" />
+    </action-map>
+</aslan-app>

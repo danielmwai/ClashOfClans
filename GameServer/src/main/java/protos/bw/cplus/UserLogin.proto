@@ -1,0 +1,21 @@
+package message;
+option optimize_for = LITE_RUNTIME; 
+message UserLoginRequest
+{
+	required    string mailAddress = 1;
+	required	string	language = 2;	
+	required	string	version = 3;
+	optional	string	machineNum = 4;
+	optional	int32	instance_id	= 5;
+}
+
+message UserLoginResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;
+        optional string gameServerAddress=3;
+	optional uint64 verifyCode =4;
+	optional string	version = 5[default="1.0"];
+	optional int32 updateAble = 6[default=0];
+	optional string fileServerAddress = 7[default="http://192.168.0.66:80"];
+}

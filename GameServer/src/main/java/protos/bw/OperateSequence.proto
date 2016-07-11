@@ -1,0 +1,37 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="OperateSequence";
+message OperateSequenceRequest
+{
+	required	string	version=1;
+	required	string	mailAddress=2;
+	repeated	Operate	operateList=3;
+	repeated	Accelerate	accelerateList=4;
+	
+	message Operate{
+		required	sint32	type=1;
+		optional	string	operation_time=2;
+		optional	int32	uuid=3;
+		optional	int32	building_id=4;
+		optional	string	end_time=5;
+		optional	int32	move_to_map_index_x=6;
+		optional	int32	character_id=7;
+		optional	int32	produce_count=8;
+		optional	string	remaining_time=9;
+		optional	int32	move_to_map_index_y=10;
+		optional	int32	build_upgrade_status=11;
+	}
+	message Accelerate{
+		required	int32	type=1;
+		required	int32	id=2;
+		optional	int32	uuid=3;
+		optional	string	remain_time=4;
+		required	int32	gem_count=5;
+	}
+}
+message OperateSequenceResponse
+{
+	optional	sint32	result=1;
+	optional	string	info=2;
+
+}

@@ -1,0 +1,24 @@
+package message;
+
+option java_package = "com.bw.application.message";
+
+option java_outer_classname = "UserRegisterInfo";
+
+message UserRegisterRequest
+{
+required	string	mailAddress=1;
+required	string	nickName=2;
+required string	language=3;//所用语言
+required	string	password=4;
+optional	int32	sex=5 [default=0];
+required	string	tempMailAddress=6;
+required string	machineNum=7;//机器码(检测数据是否迁移)
+required  int32  screenHeight=8;
+optional  int32  screenWidth=9;
+}
+
+message UserRegisterResponse
+{
+	optional sint32	result = 1;//�쳣״̬���
+	optional string	info = 2;//ϵͳ��Ϣ
+}

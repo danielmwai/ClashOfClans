@@ -1,0 +1,229 @@
+package com.powernpc.active;
+
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
+
+import org.apache.log4j.Logger;
+import org.apache.mina.core.filterchain.IoFilter;
+import org.apache.mina.core.service.IoAcceptor;
+import org.apache.mina.core.service.IoHandler;
+import org.apache.mina.core.session.IdleStatus;
+import org.apache.mina.filter.codec.ProtocolCodecFactory;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.textline.LineDelimiter;
+import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
+import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.filter.firewall.BlacklistFilter;
+import org.apache.mina.filter.firewall.ConnectionThrottleFilter;
+import org.apache.mina.filter.logging.LoggingFilter;
+import org.apache.mina.integration.jmx.IoFilterMBean;
+import org.apache.mina.integration.jmx.IoServiceMBean;
+import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+
+public class MinaServer
+{
+  private Logger logger = Logger.getLogger(getClass());
+  private ProtocolCodecFactory protocolCodecFactory;
+  private IoAcceptor acceptor;
+  private int port;
+  private String address;
+  private IoHandler handler;
+  private int corePoolSize;
+  private int maximumPoolSize;
+  private int keepAliveTime;
+  private int queueSize;
+  private AtomicBoolean started;
+  private String connectionInterval;
+  public MinaServer()
+  {
+    this.started = new AtomicBoolean(false);
+    this.corePoolSize = 16;
+    this.maximumPoolSize = 500;
+    this.keepAliveTime = 60;
+    this.queueSize = 20;
+  }
+
+  private void init() {
+    try {
+      this.acceptor = new NioSocketAcceptor();
+      ThreadPoolExecutor threadPool = new ThreadPoolExecutor(this.corePoolSize, this.maximumPoolSize, this.keepAliveTime, TimeUnit.SECONDS, 
+        new ArrayBlockingQueue(this.queueSize), new ThreadPoolExecutor.AbortPolicy());
+
+      this.acceptor.getFilterChain().addLast("exceutor", new ExecutorFilter(threadPool));
+
+      this.acceptor.getFilterChain().addLast("logger", new LoggingFilter());
+
+      BlacklistFilter blacklistFilter = new BlacklistFilter();
+
+      blacklistFilter.block(InetAddress.getByName("192.168.1.102"));
+
+      this.acceptor.getFilterChain().addLast("blackList", blacklistFilter);
+
+      this.acceptor.getFilterChain().addLast("ctf", new ConnectionThrottleFilter());
+
+      this.acceptor.getFilterChain().addLast(
+        "powernpc", 
+        new ProtocolCodecFilter(
+        new TextLineCodecFactory(Charset.forName("UTF-8"), LineDelimiter.WINDOWS.getValue(), LineDelimiter.WINDOWS
+        .getValue())));
+
+      this.acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(this.protocolCodecFactory));
+      this.acceptor.setHandler(this.handler);
+      this.acceptor.getSessionConfig().setReadBufferSize(2048);
+      this.acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+      this.acceptor.bind(new InetSocketAddress(8000));
+
+      this.logger.info("<-XXXGame AppServer started->");
+    } catch (UnknownHostException e) {
+      this.logger.error("Failed to start AppServer", e);
+      System.exit(1);
+    } catch (IOException e) {
+      this.logger.error("Failed to start AppServer", e);
+      System.exit(1);
+    }
+  }
+
+  public void registerJMX(IoFilter source)
+  {
+    MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+    IoServiceMBean acceptorMBean = new IoServiceMBean(this.acceptor);
+    IoFilterMBean ioFilterMBean = new IoFilterMBean(source);
+    try
+    {
+      ObjectName acceptorName = new ObjectName(this.acceptor.getClass().getPackage().getName() + ":type=acceptor,name=" + this.acceptor.getClass().getSimpleName());
+      ObjectName ioFilterName = new ObjectName(ioFilterMBean.getClass().getPackage().getName() + ":type=ioFilterMBean,name=" + 
+        ioFilterMBean.getClass().getSimpleName());
+      mBeanServer.registerMBean(acceptorMBean, acceptorName);
+      mBeanServer.registerMBean(ioFilterMBean, ioFilterName);
+    } catch (MalformedObjectNameException e) {
+      this.logger.error(e);
+    } catch (NullPointerException e) {
+      this.logger.error(e);
+    } catch (InstanceAlreadyExistsException e) {
+      this.logger.error(e);
+    } catch (MBeanRegistrationException e) {
+      this.logger.error(e);
+    } catch (NotCompliantMBeanException e) {
+      this.logger.error(e);
+    }
+  }
+
+  public static void main(String[] args)
+  {
+  }
+
+  public void start()
+  {
+    if (this.started.compareAndSet(false, true)) {
+      init();
+      if (this.logger.isDebugEnabled())
+        this.logger.debug("mina server started,listening port:" + this.port);
+    }
+  }
+
+  public void stop()
+  {
+    if (this.started.compareAndSet(true, false)) {
+      this.acceptor.unbind();
+      if (this.logger.isDebugEnabled())
+        this.logger.debug("mina server stoped");
+    }
+  }
+
+  public ProtocolCodecFactory getProtocolCodecFactory()
+  {
+    return this.protocolCodecFactory;
+  }
+
+  public void setProtocolCodecFactory(ProtocolCodecFactory protocolCodecFactory) {
+    this.protocolCodecFactory = protocolCodecFactory;
+  }
+
+  public IoAcceptor getAcceptor() {
+    return this.acceptor;
+  }
+
+  public void setAcceptor(IoAcceptor acceptor) {
+    this.acceptor = acceptor;
+  }
+
+  public int getPort() {
+    return this.port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  public String getAddress() {
+    return this.address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public IoHandler getHandler() {
+    return this.handler;
+  }
+
+  public void setHandler(IoHandler handler) {
+    this.handler = handler;
+  }
+
+  public int getCorePoolSize() {
+    return this.corePoolSize;
+  }
+
+  public void setCorePoolSize(int corePoolSize) {
+    this.corePoolSize = corePoolSize;
+  }
+
+  public int getMaximumPoolSize() {
+    return this.maximumPoolSize;
+  }
+
+  public void setMaximumPoolSize(int maximumPoolSize) {
+    this.maximumPoolSize = maximumPoolSize;
+  }
+
+  public int getKeepAliveTime() {
+    return this.keepAliveTime;
+  }
+
+  public void setKeepAliveTime(int keepAliveTime) {
+    this.keepAliveTime = keepAliveTime;
+  }
+
+  public int getQueueSize() {
+    return this.queueSize;
+  }
+
+  public void setQueueSize(int queueSize) {
+    this.queueSize = queueSize;
+  }
+
+public String getConnectionInterval() {
+	return connectionInterval;
+}
+
+public void setConnectionInterval(String connectionInterval) {
+	this.connectionInterval = connectionInterval;
+}
+  
+}

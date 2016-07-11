@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aslan-app>
+    <action-map>
+        <!-- 登录模块 -->
+        <action name="22000" bean="heartBeatAction" />
+        <action name="200" bean="OperateSequenceAction" />	
+        <action name="301" bean="BattleMatchingAction" />		
+        <action name="302" bean="BattleStartAction" />	
+        <action name="304" bean="UploadBattleResultAction" />		
+        <action name="305" bean="UploadBattleFlowAction" />		
+        <action name="307" bean="CancleBattleAction" />		
+        <action name="308" bean="RevengeBattleAction" />		
+        <action name="1003" bean="downloadMapInforAction" />				
+        <action name="1004" bean="DownloadBattleInforAction" />	
+        <action name="201" bean="CrateSoldiersAction" />			
+        <action name="1002" bean="UserRegisterAction" />			
+    </action-map>
+</aslan-app>

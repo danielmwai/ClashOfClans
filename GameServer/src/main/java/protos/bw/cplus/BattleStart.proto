@@ -1,0 +1,13 @@
+package message;
+option optimize_for = LITE_RUNTIME; 
+message BattleStartRequest
+{
+	required    string mailAddress = 1;
+	required    string defenceMailAddress=2;
+	required    string start_battle_time=3;
+}
+message BattleStartResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;	
+}

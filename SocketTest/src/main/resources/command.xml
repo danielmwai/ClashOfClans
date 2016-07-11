@@ -1,0 +1,5 @@
+<message>
+    <!-- 呼吸包心跳检测 -->
+    <entry id="22000" messageName="HeartBeatRequest" />
+    <entry id="622000" messageName="HeartBeatResponse" />
+</message>

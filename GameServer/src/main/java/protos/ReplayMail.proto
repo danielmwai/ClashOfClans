@@ -1,0 +1,27 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "ReplayMail";
+
+message ReplayMailRequest
+{
+
+	required string	mailId	= 1; //(确认,接受人)邮箱地址
+	repeated Replay replayMailList= 2 ;//回馈列表
+
+	message Replay
+	{
+		required string	mailed_praised= 1; //(被确认,被接受人)邮箱地址
+		required int32	replayType= 2; //1-确定好友请求;2-接收照料请求
+
+
+	}
+	
+}
+
+message ReplayMailResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	info = 2;//系统消息
+}

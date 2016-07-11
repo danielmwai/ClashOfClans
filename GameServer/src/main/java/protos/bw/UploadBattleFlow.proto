@@ -1,0 +1,21 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="UploadBattleFlow";
+message UploadBattleFlowRequest
+{
+	required	string	mailAddress=1;
+	required	IoData	ioData=2;
+	optional	sint32	maxIndex=3;
+	optional	sint32	index=4;
+
+        message  IoData{
+
+	  repeated bytes	data=1;
+
+	}
+}
+message UploadBattleFlowResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;	
+}

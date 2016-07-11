@@ -1,0 +1,10 @@
+package message;
+
+option java_package = "com.bw.application.message";
+option java_outer_classname = "RegisterChannel";
+
+message RegisterChannelRequest
+{
+	required int32 appId = 1;
+	required int32 roleCount = 2;
+}

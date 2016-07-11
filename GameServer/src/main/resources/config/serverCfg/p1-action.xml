@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans>
+        <!-- 用户模块 ACTION -->
+        <bean id="heartBeatAction" class="com.commonSocket.active.HeartBeatAction"  />
+        <bean id="downloadMapInforAction" class="com.bw.application.action.DownloadMapInforAction">
+            <property name="userManagerImpl" ref="UserManagerImpl"></property>
+            <property name="onLineManagerImpl" ref="onlineManage" />
+            <property name="appConfig" ref="appConfig"></property>
+        </bean>
+        <bean id="OperateSequenceAction" class="com.bw.application.action.OperateSequenceAction">
+            <property name="userManagerImpl" ref="UserManagerImpl"></property>
+        </bean>
+        <bean id="BattleDataCheckAction" class="com.bw.application.action.BattleDataCheckAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>	
+        <bean id="BattleMatchingAction" class="com.bw.application.action.BattleMatchingAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>	
+        <bean id="BattleStartAction" class="com.bw.application.action.BattleStartAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>	
+        <bean id="CancleBattleAction" class="com.bw.application.action.CancleBattleAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>	
+        <bean id="DownloadBattleInforAction" class="com.bw.application.action.DownloadBattleInforAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>	
+        <bean id="UploadBattleFlowAction" class="com.bw.application.action.UploadBattleFlowAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>		
+        <bean id="UploadBattleResultAction" class="com.bw.application.action.UploadBattleResultAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>
+        <bean id="UploadBattleResultPVEAction" class="com.bw.application.action.UploadBattleResultPVEAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>		
+        <bean id="CrateSoldiersAction" class="com.bw.application.action.CrateSoldiersAction">
+            <property name="userManagerImpl" ref="UserManagerImpl"></property>
+        </bean>
+        <bean id="UserRegisterAction" class="com.bw.application.action.UserRegisterAction">
+            <property name="userManagerImpl" ref="UserManagerImpl"></property>
+        </bean>
+        <bean id="RevengeBattleAction" class="com.bw.application.action.RevengeBattleAction">
+            <property name="battleManagerImpl" ref="battleManagerImpl"></property>
+        </bean>
+        <bean id="PVPGradeOrderAction" class="com.bw.application.action.PVPGradeOrderAction">
+            <property name="pVPOrderManagerImpl" ref="PVPOrderManagerImpl"></property>
+        </bean>	
+    </beans>
+    
+</beans>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

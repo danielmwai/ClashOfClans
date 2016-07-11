@@ -1,0 +1,33 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="UserLoginInfo";
+message UserLoginRequest
+{
+required string	mailAddress=1;//帐号(邮箱地质)
+required string	language=2;//所用语言
+required string	version=3;//客户端版本号
+required string	machineNum=4;//机器码(检测数据是否迁移)
+optional int32	instance_id=5;//游戏服务器的实例号
+optional int32	area_id=6;
+optional	string	loginId=7;
+optional	int32	third_party_type=8 [default=0];
+optional	int32	login_type=9 [default=0];
+optional	string	password=10;
+required  int32  screenHeight=11;
+optional  int32  screenWidth=12;
+
+}
+message UserLoginResponse
+{
+optional sint32	result=1;
+optional string	info=2;//系统消息
+optional string	gameServerAddress=3;//游戏服务器地址
+optional uint64	verifyCode=4;//临时登录码:服务器只保存3小时，过期后只能重新登录获取
+optional string	version=5;//服务端版本号
+optional int32 updateAble=6;//是否需要更新客户端0 不需要更新 1 有资源需要更新
+optional string fileServerAddress=7;//文件服务器IP地址
+optional int32	instance_id=8;//要登录的游戏服务器实例号
+optional string	tempMailAddress=9;
+optional int32	area_id=10;
+
+}

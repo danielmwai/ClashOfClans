@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+ 
+    <beans>
+        <!-- 通告 -->
+        <bean name="_notice" class="com.commonSocket.net.notice.support.CSBusyStatusNotice">
+            <!-- 双端空闲最大次数 -->
+            <property name="bothIdleCount">
+                <value>30</value>
+            </property>
+		
+            <!-- 写端空闲最大次数 -->
+            <property name="readerIdleCount">
+                <value>0</value>
+            </property>
+		
+            <!-- 读端空闲最大次数 -->
+            <property name="writerIdleCount">
+                <value>0</value>
+            </property>
+        </bean>
+    </beans>

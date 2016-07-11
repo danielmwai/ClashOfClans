@@ -1,0 +1,40 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "VisitFriends";
+
+message VisitFriendsRequest
+{
+
+	required string	mailId = 1;//邮箱地址
+	
+	
+}
+
+message VisitFriendsResponse
+{
+	optional sint32	result = 1;//异常状态码表 2 
+	optional string	info = 2;//附加信息
+	optional string	nickName = 3;//好友昵称
+	optional string	imageName = 4;//好友图片名称
+	optional int32	friendLevel = 5;//好友等级
+	optional int32	friendExp = 6;//好友经验
+	optional int32	friendGoldenCount = 7;//好友金币
+	optional int32	friendCurrencyCount = 8;//好友代币
+	optional int32	friendPraiseCount = 9;//好友赞币
+	optional int32	friendSex = 10;//性别0男 1女
+	repeated BuildingInfor	buildingList = 11;//建筑物信息
+
+
+	message BuildingInfor
+	{
+		optional int32	buildingType = 1;//0建筑物(包含主城数据),1农作物,2主岛,3浮岛
+		optional string	pointx = 2;//X点坐标
+		optional string	pointy = 3;//Y点坐标
+		optional int32	buildingId = 4;//建筑ID，农作物ID，主岛ID，浮岛ID
+		optional int32	status = 5;//建筑物,农作物状态（0农作物的苗期 1收益中，2建造中,3升级）
+
+	}
+	
+}

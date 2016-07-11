@@ -1,0 +1,31 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "GetFriendList";
+
+message GetFriendListRequest
+{
+
+	required string	mailAddress = 1;// mailAddress
+	required int32	pageCount = 2;//需要的页数(默认要5页)
+	
+	
+}
+
+message GetFriendListResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	sysinfo = 2;//系统消息
+	repeated Friend	friend = 3;//好友列表
+
+	message Friend
+	{
+		optional string	mailAddress =1;//好友mailAddress
+		optional string	friendNickName =2;//好友昵称
+		optional int32	friendLevel = 3;//好友等级
+		optional string	friendImageName =4;//好友图片名称
+
+	}
+	
+}

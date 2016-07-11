@@ -1,0 +1,19 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "PraiseFriends";
+
+message PraiseFriendsRequest
+{
+
+	required string	mailId = 1;//称赞人邮箱地址
+	required string	mailed_Praised = 2;//被称赞人邮箱地址
+
+}
+
+message PraiseFriendsResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	sysinfo = 2;//系统消息
+}

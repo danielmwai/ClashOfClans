@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans>
+        <bean id="messageParser" factory-method="getInstance" class="com.commonSocket.net.codec.message.DefaultMessageParser" />
+
+        <bean id="protocolCodecFactory" class="com.commonSocket.net.codec.demux.DefaultDemuxingProtocolCodecFactory" />
+
+        <bean id="actionFactory" class="com.commonSocket.net.action.support.DefaultActionFactory" />
+	
+        <bean id="noticeFactory" class="com.commonSocket.net.notice.support.DefaultNoticeFactory" />
+
+        <bean id="actionDispatcher" class="com.commonSocket.net.action.support.DefaultActionDispatcher">
+            <property name="filterChainFactory">
+                <ref bean="filterChainFactory" />
+            </property>
+            <property name="actionFactory">
+                <ref bean="actionFactory" />
+            </property>
+        </bean>
+
+        <bean id="noticeDispatcher" class="com.commonSocket.net.notice.support.DefaultNoticeDispatcher">
+            <property name="filterChainFactory">
+                <ref bean="filterChainFactory" />
+            </property>
+            <property name="noticeFactory">
+                <ref bean="noticeFactory" />
+            </property>
+        </bean>
+
+        <bean id="minaIoHandler" class="com.bw.active.DefaultMinaIoHandler">
+            <property name="actionDispatcher">
+                <ref local="actionDispatcher" />
+            </property>
+
+            <property name="noticeDispatcher">
+                <ref local="noticeDispatcher" />
+            </property>
+            <!-- 在线 -->
+            <property name="onlineManage">
+                <ref bean="onlineManage" />
+            </property>
+            <!-- 下线 -->
+            <property name="offLineManager">
+                <ref bean="offLineManager" />
+            </property>		
+        </bean>
+
+    </beans>
+
+</beans>

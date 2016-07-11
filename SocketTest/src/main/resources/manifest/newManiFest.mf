@@ -1,0 +1,8 @@
+#Server resources manifest.
+#Thu Sep 22 20:58:06 CST 2011
+1.png=1.0
+3.png=1.0
+5.png=1.0
+2.png=1.0
+11.png=1.0
+newManiFest.mf=1.0

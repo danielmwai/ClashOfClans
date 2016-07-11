@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    <import resource="lootersCtx.xml"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="com.bw.looters.ms.storage.dao"/>
+    <context:component-scan base-package="com.bw.looters.ms.biz.facade"/>
+    <context:component-scan base-package="com.bw.looters.ms.biz.repo"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="msDataSource"/>
+    </bean>
+    <bean id="msDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${looters.jdbc.userpassword.driverClass}"/>
+        <property name="jdbcUrl" value="${looters.jdbc.userpassword.url}"/>
+        <property name="user" value="${looters.jdbc.userpassword.username}"/>
+        <property name="password" value="${looters.jdbc.userpassword.password}"/>
+        
+        <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+        <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+        <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+        <property name="maxIdleTimeExcessConnections"
+                  value="${jdbc.maxIdleTimeExcessConnections}" />
+        <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+        <property name="numHelperThreads" value="${jdbc.numHelperThreads}" />
+    </bean>
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="msDataSource"/>
+        <property name="mapperLocations" value="classpath*:com/bw/looters/ms/storage/dao/*.xml"/>
+        <!--        <property name="mapperLocations" value="classpath:User.xml"/>-->
+        <property name="typeAliasesPackage" value="com.bw.looters.ms.storage.dto"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.bw.looters.ms.storage.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+</beans>

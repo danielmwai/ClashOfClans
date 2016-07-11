@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    
+    
+    <beans>
+        <bean name="channelManager"
+              class="com.bw.application.manager.channel.ChannelManagerImpl"
+              singleton="true" autowire="byName" init-method="start" destroy-method="stop">
+            <!-- 心跳间隔（毫秒为单位）185000 -->
+            <property name="egisTime">
+                <value>185000</value>
+            </property>
+            <property name="cmTableDao"  ref="cmTableDaoImpl"></property>
+        </bean>
+        <bean id="userManager" class="com.bw.application.manager.user.UserManagerImpl">
+            <property name="cguserDAO" ref="cguserCacheDAO"></property>
+        </bean>
+    </beans>

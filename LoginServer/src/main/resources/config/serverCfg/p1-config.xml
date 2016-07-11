@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    
+    
+    <beans>
+        <bean id="appConfig" class="com.bw.application.config.AppConfig"
+              init-method="init">
+            <property name="fileName">
+                <value>/config/properties/appConfig.properties</value>
+            </property>
+        </bean>
+        <bean id="pathConfig" class="com.bw.application.config.PathConfig"
+              init-method="init">
+            <property name="fileName">
+                <value>/config/properties/pathConfig.properties</value>
+            </property>
+        </bean>
+    </beans>

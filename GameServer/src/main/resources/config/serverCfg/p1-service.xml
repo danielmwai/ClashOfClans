@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+
+    <beans>
+
+        <bean name="heartbeatService" class="com.bw.application.server.ClientServerHeart"
+              singleton="true" autowire="byName" init-method="start" destroy-method="stop">
+            <!-- 发送缓冲区最大字节数 -->
+            <property name="sendBufferSize">
+                <value>1024</value>
+            </property>
+            <!-- 登录服务器端口 -->
+            <property name="port">
+                <value>8888</value>
+            </property>
+            <!-- 登录服务器地址  多个IP地址用分号隔开-->
+            <property name="address">
+                <value>188.166.20.234</value>
+            </property>
+            <!-- 建立连接时间（毫秒为单位） -->
+            <property name="timeout">
+                <value>3000</value>
+            </property>
+            <!-- 心跳间隔（毫秒为单位）180000 ,建议不要修改该值 -->
+            <property name="egisTime">
+                <value>180000</value>
+            </property>
+		
+            <property name="protocolCodecFactory" ref="protocolCodecFactory" />
+        </bean>
+    </beans>
+    

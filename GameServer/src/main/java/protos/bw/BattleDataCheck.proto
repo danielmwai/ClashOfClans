@@ -1,0 +1,32 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="BattleDataCheck";
+message BattleDataCheckRequest
+{
+	required	string	mailAddress=1;
+	repeated	CharacterBaseRepeat	characterbaseList=2;
+	repeated	AttackTargetRepeat	attackTargetList=3;
+	repeated	PathRepeat	pathList=4;
+	optional	int32	golden_count=5;
+	optional	int32	elixir_count=6;
+	optional	int32	pvp_mark=7;
+	message CharacterBaseRepeat{
+	optional	int32	character_id=1;
+	optional	int32	character_level=2;
+	optional	string	md5=3;
+	}
+	message AttackTargetRepeat{
+	optional	int32	character_id=1;
+	optional	int32	target_id=2;
+	}
+	message PathRepeat{
+	optional	int32	character_id=1;
+	optional	string	pointx_y=2;
+	}
+}
+
+message BattleDataCheckResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;	
+}

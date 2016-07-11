@@ -1,0 +1,32 @@
+package message;
+option optimize_for = LITE_RUNTIME; 
+message UploadBattleResultRequest
+{
+	required	string	mailAddress=1;
+	optional	int32	golden_count=2;
+	optional	int32	elixir_count=3;
+	optional	int32	pvp_mark=4;
+	optional	int32	star_percent=5;
+	repeated	BuildDestoryStatus	BuildDistoryStatusList=6;
+	repeated	CharacterUsedStatus	characterUsedStatusList=7;
+	optional	bool	use_clans_flag=8;
+	optional	int32	star_count=9;
+	message BuildDestoryStatus{
+		optional	int32	building_id=1;
+		optional	int32	uuid=2;
+		optional	int32	map_index_x=3;
+		optional	int32	map_index_y=4;
+		optional	int32	destory_status=5;
+	}
+	message CharacterUsedStatus{
+		optional	int32	characterIdOrSpellId=1;
+		optional	int32	count=2;
+		optional	int32	used_type=3;
+		
+	}	
+}
+message UploadBattleResultResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;	
+}

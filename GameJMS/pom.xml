@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gameJms</groupId>
+    <artifactId>GameJMS</artifactId>
+    <version>5.0.1-RELEASE</version>
+    <packaging>jar</packaging>
+
+    <name>GameJMS</name>
+
+    <properties>
+        <activemq-version>5.6.0</activemq-version>
+        <junit-version>4.8</junit-version>
+        <log4j-version>1.2.13</log4j-version>
+        <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
+        <maven-exec-plugin-version>1.2</maven-exec-plugin-version>
+        <slf4j-version>1.6.1</slf4j-version>
+        <spring-version>3.0.5.RELEASE</spring-version> 
+    </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${activemq-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gamecache</groupId>
+            <artifactId>GameCache</artifactId>
+            <version>5.0.1-RELEASE</version>
+            <type>jar</type>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-integration-jmx</artifactId>
+            <version>2.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-integration-beans</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-integration-ognl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sockettest</groupId>
+            <artifactId>SocketTest</artifactId>
+            <version>5.0.1-RELEASE</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin-version}</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <extensions>true</extensions>
+                </plugin>
+                
+                 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Optional Start -->
+                            <finalName>GameJMS-Uber-5.0.1-RELEASE</finalName>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                            <!-- Optional End -->
+							
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.bw.active.Server</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.tooling</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

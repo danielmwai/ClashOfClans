@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    <bean id="propertyConfigurer" class="com.bw.cache.utils.PropertiesForJar">
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+        <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+        <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+        <property name="maxIdleTimeExcessConnections"
+                  value="${jdbc.maxIdleTimeExcessConnections}" />
+    </bean>
+    <bean id="dataSourceManager" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.manager.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+        <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+        <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+        <property name="maxIdleTimeExcessConnections"
+                  value="${jdbc.maxIdleTimeExcessConnections}" />
+    </bean>
+
+
+    <bean id="cityMemCachedClient" class="com.bw.cache.CityMemCachedClient">
+        <property name="memcachedClient" ref="memcachedClient" />
+    </bean>
+    <bean id="memcachedClient" name="memcachedClient"
+          class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean"
+          destroy-method="shutdown">
+        <property name="servers">
+            <!-- 主备用逗号分割且为一组 不同的组用空格分割 -->
+            <value>${memcached.server1}</value>
+        </property>
+        <property name="connectionPoolSize" value="1"></property>
+        <!-- Distributed strategy 一致性哈希 -->
+        <property name="sessionLocator">
+            <bean
+                class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator">
+            </bean>
+        </property>
+        <!-- Serializing transcoder -->
+        <property name="transcoder">
+            <bean
+                class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+        </property>
+        <!-- ByteBuffer allocator -->
+        <property name="bufferAllocator">
+            <bean
+                class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator">
+            </bean>
+        </property>
+        <!-- Failure mode -->
+        <property name="failureMode" value="false" />
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+    </bean>
+    <bean id="jdbcTemplateManager" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="dataSourceManager" />
+        </property>
+    </bean>
+    <!-- 用户模块 start -->
+    <bean id="userDAO" class="com.bw.dao.springdao.CGUserDaoImpl">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+    </bean>
+    <bean id="cguserCacheDAO" class="com.bw.dao.cachedao.CGUserCacheDaoImpl">
+        <property name="userDAO" ref="userDAO"></property>
+        <property name="cache" ref="cityMemCachedClient"></property>
+	   
+    </bean>
+    <!-- 用户模块 end -->
+    <!-- 全局基础表初始化 start -->
+    <bean id="cmTableDaoImpl" class="com.bw.dao.springdao.CmTableDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplateManager" />
+		
+    </bean>
+</beans>

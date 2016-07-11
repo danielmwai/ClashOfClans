@@ -1,0 +1,54 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="RevengeBattle";
+message RevengeBattleRequest
+{
+	required    string mailAddress = 1;
+	optional	string	defenceMailAddress=2;
+}
+message RevengeBattleResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;
+	optional string	nick_name=3;
+	optional int32	golden_count=4;
+	optional int32	elixir_count=5;
+	optional int32	pvp_mark=6;
+	optional int32	level=7;
+	repeated UserMapData  userMapDataList=8;
+	repeated	AttackerSoldiersAndSpell	soldiersAndSpellList=9;
+	optional	int32	used_clans_character_count=10;
+	optional	int32	lose_pvp_mark=11;
+	repeated	BuildDestoryStatus	BuildDistoryStatusList=12;	
+	message UserMapData{
+		optional	int32	map_index_x=1;
+		optional	int32	uniqueness_build_id=2;
+		optional	int32	status=3;
+		optional	int32	building_id=4;
+		optional	int32	Building_level=5;
+		optional	int32	map_index_y=6;
+		repeated	Clans	clansList=7;
+		optional	int32	collect_count=8;
+		optional	int32	building_status=9;
+
+		message  Clans{
+			optional	int32	character_id=1;
+			optional	int32	character_level=2;
+			optional	int32	finished_produce_count=3;
+		}
+
+
+	}
+	message AttackerSoldiersAndSpell{
+	optional	int32	characterIdOrSpellId=1;
+	optional	int32	characterOrSpellLevel=2;
+	optional	int32	count=3;
+	optional	int32	used_type=4;
+	}
+	message BuildDestoryStatus{
+	optional	int32	building_id=1;
+	optional	int32	uuid=2;
+	optional	int32	map_index_x=3;
+	optional	int32	map_index_y=4;
+	}
+}

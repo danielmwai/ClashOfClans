@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bw.looters.ms.storage.dao.UserDao">
+    
+    <insert id="insert">
+        insert into user(username, password) values(#{username}, #{password})
+    </insert>
+    <select id="select" parameterType="string" resultType="UserDto">
+        select username, password from user where username = #{username}
+    </select>
+    <update id="update" parameterType="UserDto">
+        update user set username = #{username}, password = #{password} where username = #{username}
+    </update>
+    <delete id="delete" parameterType="string">
+        delete from user where username = #{username}
+    </delete>
+</mapper>

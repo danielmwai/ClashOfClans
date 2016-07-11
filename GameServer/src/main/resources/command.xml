@@ -1,0 +1,37 @@
+<message>
+    <!-- 呼吸包心跳检测 -->
+    <entry id="22000" messageName="HeartBeatRequest" />
+    <entry id="622000" messageName="HeartBeatResponse" />
+	
+    <entry id="1003" messageName="DownloadMapInforRequest" />
+    <entry id="41003" messageName="DownloadMapInforResponse" />	
+	
+    <entry id="200" messageName="OperateSequenceRequest" />
+    <entry id="40200" messageName="OperateSequenceResponse" />		
+	
+    <entry id="301" messageName="BattleMatchingRequest" />
+    <entry id="40301" messageName="BattleMatchingResponse" />	
+	
+    <entry id="302" messageName="BattleStartRequest" />
+    <entry id="40302" messageName="BattleStartResponse" />	
+	
+    <entry id="304" messageName="UploadBattleResultRequest" />
+    <entry id="40304" messageName="UploadBattleResultResponse" />		
+
+    <entry id="305" messageName="UploadBattleFlowRequest" />
+    <entry id="40305" messageName="UploadBattleFlowResponse" />	
+	
+    <entry id="307" messageName="CancleBattleRequest" />
+    <entry id="40307" messageName="CancleBattleResponse" />		
+	
+    <entry id="1004" messageName="DownloadBattleInforRequest" />
+    <entry id="41004" messageName="DownloadBattleInforResponse" />
+	
+    <entry id="201" messageName="ProduceSoldiersRequest"/>
+    <entry id="40201" messageName="ProduceSoldiersResponse"/>
+    <entry id="1002" messageName="UserRegisterRequest"/>
+    <entry id="41002" messageName="UserRegisterResponse"/>	
+    <entry id="308" messageName="RevengeBattleRequest" />
+    <entry id="40308" messageName="RevengeBattleResponse" />							
+</message>
+

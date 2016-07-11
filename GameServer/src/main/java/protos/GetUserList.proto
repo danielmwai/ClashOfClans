@@ -1,0 +1,31 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "GetUserList";
+
+message GetUserListRequest
+{
+
+	required string	mailAddress = 1;// mailAddress
+	optional string	nickName = 2;//	昵称
+	
+	
+}
+
+message GetUserListResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	sysinfo = 2;//系统消息
+	repeated Users	user = 3;//用户列表
+
+	message Users
+	{
+		optional string	mailAddress =1;//mailAddress
+		optional string	nickName =2;//昵称
+		optional int32	level = 3;//等级
+		optional string	imageName =4;//图片名称
+
+	}
+	
+}

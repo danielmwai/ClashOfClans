@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com</groupId>
+    <artifactId>LoginServer</artifactId>
+    <version>5.0.1-RELEASE</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.sockettest</groupId>
+            <artifactId>SocketTest</artifactId>
+            <version>5.0.1-RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.basejar</groupId>
+            <artifactId>BaseJar</artifactId>
+            <version>5.0.1-RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.gamecache</groupId>
+            <artifactId>GameCache</artifactId>
+            <version>5.0.1-RELEASE</version>
+        </dependency>
+        
+        <!--        <dependency>
+            <groupId>com.dominicsayers</groupId>
+            <artifactId>dominicsayers-isEmail</artifactId>
+            <version>1.0</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.github.lite2073</groupId>
+            <artifactId>email-validator</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>dnsjava</groupId>
+            <artifactId>dnsjava</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
+        
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.3</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-integration-beans</artifactId>
+            <version>2.0.3</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-integration-ognl</artifactId>
+            <version>2.0.3</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-integration-beans</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-integration-jmx</artifactId>
+            <version>2.0.3</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-integration-beans</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.mina</groupId>
+                    <artifactId>mina-integration-ognl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.xmemcached</groupId>
+            <artifactId>xmemcached</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+
+        
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1204-jdbc41</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Expression Language (depends on spring-core)
+        Define this if you use Spring Expression APIs 
+        (org.springframework.expression.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Bean Factory and JavaBeans utilities (depends on spring-core)
+        Define this if you use Spring Bean APIs 
+        (org.springframework.beans.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Aspect Oriented Programming (AOP) Framework 
+        (depends on spring-core, spring-beans)
+        Define this if you use Spring AOP APIs 
+        (org.springframework.aop.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Application Context 
+        (depends on spring-core, spring-expression, spring-aop, spring-beans)
+        This is the central artifact for Spring's Dependency Injection Container
+        and is generally always defined-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Various Application Context utilities, including EhCache, JavaMail, Quartz, 
+        and Freemarker integration
+        Define this if you need any of these integrations-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Transaction Management Abstraction 
+        (depends on spring-core, spring-beans, spring-aop, spring-context)
+        Define this if you use Spring Transactions or DAO Exception Hierarchy
+        (org.springframework.transaction.*/org.springframework.dao.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- JDBC Data Access Library 
+        (depends on spring-core, spring-beans, spring-context, spring-tx)
+        Define this if you use Spring's JdbcTemplate API 
+        (org.springframework.jdbc.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA and iBatis.
+        (depends on spring-core, spring-beans, spring-context, spring-tx)
+        Define this if you need ORM (org.springframework.orm.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, 
+        Castor, XStream, and XML Beans.
+        (depends on spring-core, spring-beans, spring-context)
+        Define this if you need OXM (org.springframework.oxm.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Web application development utilities applicable to both Servlet and 
+        Portlet Environments 
+        (depends on spring-core, spring-beans, spring-context)
+        Define this if you use Spring MVC, or wish to use Struts, JSF, or another
+        web framework with Spring (org.springframework.web.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Spring MVC for Servlet Environments 
+        (depends on spring-core, spring-beans, spring-context, spring-web)
+        Define this if you use Spring MVC with a Servlet Container such as 
+        Apache Tomcat (org.springframework.web.servlet.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Spring MVC for Portlet Environments 
+        (depends on spring-core, spring-beans, spring-context, spring-web)
+        Define this if you use Spring MVC with a Portlet Container 
+        (org.springframework.web.portlet.*)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>3.2.17.RELEASE</version>
+        </dependency>
+        <!-- Support for testing Spring applications with tools such as JUnit and TestNG
+        This artifact is generally always defined with a 'test' scope for the 
+        integration testing framework and unit testing stubs-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.2.17.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+            
+      
+
+        <!--
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.21</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+
+       
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/LoginServer</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Optional Start -->
+                            <finalName>LoginServer-Uber-5.0.1-RELEASE</finalName>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                            <!-- Optional End -->
+							
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.bw.active.Server</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>config/jdbc.properties</resource>
+                                    <file>config/jdbc.properties</file>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.tooling</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    <context:property-placeholder location="classpath:config.properties" />
+
+    <context:component-scan base-package="com.bw.looters.base.dao"></context:component-scan>
+    <!-- 数据源配置 -->
+    <bean id="lootersManagerJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <bean class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+                <property name="driverClass" value="${looters.jdbc.manager.driverClass}"/>
+                <property name="jdbcUrl" value="${looters.jdbc.manager.url}"/>
+                <property name="user" value="${looters.jdbc.manager.username}"/>
+                <property name="password" value="${looters.jdbc.manager.password}"/>
+                
+                
+                <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+                <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+                <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+                <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+                <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+                <property name="maxIdleTimeExcessConnections"
+                          value="${jdbc.maxIdleTimeExcessConnections}" />
+                <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+                <property name="numHelperThreads" value="${jdbc.numHelperThreads}" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="lootersServerJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <bean class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+                <property name="driverClass" value="${looters.jdbc.server.driverClass}"/>
+                <property name="jdbcUrl" value="${looters.jdbc.server.url}"/>
+                <property name="user" value="${looters.jdbc.server.username}"/>
+                <property name="password" value="${looters.jdbc.server.password}"/>
+                
+                <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+                <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+                <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+                <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+                <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+                <property name="maxIdleTimeExcessConnections"
+                          value="${jdbc.maxIdleTimeExcessConnections}" />
+                <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+                <property name="numHelperThreads" value="${jdbc.numHelperThreads}" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="lootersBankJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <bean class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+                <property name="driverClass" value="${looters.jdbc.bank.driverClass}"/>
+                <property name="jdbcUrl" value="${looters.jdbc.bank.url}"/>
+                <property name="user" value="${looters.jdbc.bank.username}"/>
+                <property name="password" value="${looters.jdbc.bank.password}"/>
+                
+                
+                <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+                <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+                <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+                <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+                <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+                <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+                <property name="maxIdleTimeExcessConnections"
+                          value="${jdbc.maxIdleTimeExcessConnections}" />
+                <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+                <property name="numHelperThreads" value="${jdbc.numHelperThreads}" />
+                
+            </bean>
+        </property>
+    </bean>
+    <!-- memcached 配置 -->
+    <bean id="cache" class="com.bw.cache.CityMemCachedClient">
+        <property name="memcachedClient">
+            <bean id="memcachedClient"
+                  class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean"
+                  destroy-method="shutdown">
+                <property name="servers" value="${memcached.server1}"/>
+                <property name="connectionPoolSize" value="1"/>
+                <property name="sessionLocator">
+                    <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>
+                </property>
+                <property name="transcoder">
+                    <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder"/>
+                </property>
+                <property name="bufferAllocator">
+                    <bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator"/>
+                </property>
+                <property name="failureMode" value="false"/>
+            </bean>
+        </property>
+    </bean>
+    <!-- dao配置 -->
+    <bean id="baseInfoDao" class="com.common.BaseInfor.DAO.DBBaseInforDAOImpl">
+        <property name="jdbcTemplate" ref="lootersManagerJdbcTemplate"/>
+    </bean>
+    <bean id="bwUserDao" class="com.bw.dao.cachedao.BwUserCacheDAOImpl">
+        <property name="bwUserDaoImpl">
+            <bean class="com.bw.dao.springdao.BwUserDaoImpl">
+                <property name="jdbcTemplate" ref="lootersServerJdbcTemplate"/>
+            </bean>
+        </property>
+        <property name="cache" ref="cache"/>
+    </bean>
+    <bean id="bwPlantUserDao" class="com.bw.dao.cachedao.BwPlantUserCacheDAOImpl">
+        <property name="bwPlantUserDaoImpl">
+            <bean class="com.bw.dao.springdao.BwPlantUserDaoImpl">
+                <property name="jdbcTemplate" ref="lootersServerJdbcTemplate"/>
+            </bean>
+        </property>
+        <property name="cache" ref="cache"/>
+    </bean>
+    <bean id="bwBlacklistDao" class="com.bw.dao.cachedao.BwBlacklistCacheDAOImpl">
+        <property name="bwBlacklistDaoImpl">
+            <bean class="com.bw.dao.springdao.BwBlacklistDaoImpl">
+                <property name="jdbcTemplate" ref="lootersManagerJdbcTemplate"/>
+            </bean>
+        </property>
+        <property name="cache" ref="cache"/>
+    </bean>
+    <bean id="bwGameChannleDAO" class="com.bw.dao.springdao.BwGameChannleDaoImpl">
+        <property name="jdbcTemplate" ref="lootersManagerJdbcTemplate"/>
+    </bean>
+    <bean id="bwUserBankDao" class="com.bw.dao.cachedao.BwUserBankCacheDAOImpl">
+        <property name="bwUserBankDaoImpl">
+            <bean class="com.bw.dao.springdao.BwUserBankDaoImpl">
+                <property name="jdbcTemplate" ref="lootersBankJdbcTemplate"/>
+            </bean>
+        </property>
+        <property name="cache" ref="cache"/>
+    </bean>
+
+
+    <!-- JMS配置 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+                <constructor-arg index="0">
+                    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+                        <property name="brokerURL" value="${jms.brokerUrl}"/>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+        <property name="pubSubDomain" value="false"/>
+        <property name="receiveTimeout" value="60000"/>
+    </bean>
+    <bean id="bwUserVoSender" class="com.bw.jms.sender.BwUserVOSender">
+        <property name="jmsTemplate" ref="jmsTemplate"/>
+        <property name="useQueueName" value="${jms.userInfo.queue}"/>
+        <property name="timeOut" value="${jms.userInfo.expiration_second}"/>
+    </bean>
+    
+</beans>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans>
+        <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+            <property name="brokerURL" value="${jms.brokerUrl}" />
+        </bean>
+
+        <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+            <constructor-arg index="0" ref="jmsConnectionFactory" />
+        </bean>
+
+        <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+            <property name="connectionFactory" ref="connectionFactory" />
+            <property name="pubSubDomain" value="false" />
+            <property name="receiveTimeout" value="60000" />
+        </bean>
+        <!-- 信息发送者 实用类 开始 -->
+        <bean id="SenderUtil" class="com.bw.jms.sender.SenderUtil">
+            <property name="bwUserVOSender" ref="BwUserVOSender"></property>
+            <property name="bwUserSpellVOSender" ref="BwUserSpellVOSender"></property>
+            <property name="bwUserMapDataVOSender" ref="BwUserMapDataVOSender"></property>
+            <property name="bwUserCharacterVOSender" ref="BwUserCharacterVOSender"></property>
+            <property name="bwUserBattleStatisticsVOSender" ref="BwUserBattleStatisticsVOSender"></property>
+            <property name="bBwMineCollectorVOSender" ref="BwMineCollectorVOSender"></property>
+            <property name="bwMineCollectorAllVOSender" ref="BwMineCollectorAllVOSender"></property>
+            <property name="bwBattleVOSender" ref="BwBattleVOSender"></property>
+            <property name="bwBarrackVOSender" ref="BwBarrackVOSender"></property>
+            <property name="bwLogVOSender" ref="bwLogVOSender"></property>
+        </bean>
+        <bean id="bwLogVOSender" class="com.bw.jms.sender.BwLogVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.log.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+
+        <!-- 信息发送者 实用类 结束 -->
+        <!-- 发送信息 -->
+        <!-- 兵营信息发送者 -->
+        <bean id="BwBarrackVOSender" class="com.bw.jms.sender.BwBarrackVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.BwBarrackVO.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <!-- 用户信息 -->
+        <bean id="BwUserVOSender" class="com.bw.jms.sender.BwUserVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.userInfo.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwUserSpellVOSender" class="com.bw.jms.sender.BwUserSpellVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.userSpellVO.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwUserMapDataVOSender" class="com.bw.jms.sender.BwUserMapDataVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.userMapData.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwUserCharacterVOSender" class="com.bw.jms.sender.BwUserCharacterVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.userCharacter.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwUserBattleStatisticsVOSender" class="com.bw.jms.sender.BwUserBattleStatisticsVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.UserBattleStatistics.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwMineCollectorVOSender" class="com.bw.jms.sender.BwMineCollectorVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.UserMineCollector.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwMineCollectorAllVOSender" class="com.bw.jms.sender.BwMineCollectorAllVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.UserMineCollectorAll.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <bean id="BwBattleVOSender" class="com.bw.jms.sender.BwBattleVOSender">
+            <property name="jmsTemplate" ref="jmsTemplate" />
+            <property name="useQueueName" value="${jms.UserBattleVO.queue}" />
+            <property name="timeOut" value="${jms.userInfo.expiration_second}" />
+        </bean>
+        <!-- 接收信息监听 -->
+        <!-- <bean id="receiveRefreshUserInfoListener" class="com.bw.jms.receiver.ReceiveRefreshUserInfoListener"> 
+        <property name="userDao" ref="userDAO" /> </bean> -->
+        <!-- 接收信息容器 -->
+        <!-- <bean class="com.bw.jms.receiver.ReceiveUserInfoContainer"> <property 
+        name="connectionFactory" ref="connectionFactory" /> <property name="destinationName" 
+        value="${jms.userInfo.queue}" /> <property name="pubSubDomain" value="false" 
+        /> <property name="concurrentConsumers" value="${jms.consumer.num}" /> <property 
+        name="messageListener" ref="receiveRefreshUserInfoListener" /> </bean> -->
+        <!-- 接收信息容器 -->
+        <!-- 用户信息添加器 开始 -->
+        <bean id="BwUserVOUpdateJMS" class="com.bw.application.jmsUpdate.BwUserVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwBattleVOUpdateJMS" class="com.bw.application.jmsUpdate.BwBattleVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwMineCollectorAllVOUpdateJMS"
+              class="com.bw.application.jmsUpdate.BwMineCollectorAllVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwMineCollectorVOUpdateJMS" class="com.bw.application.jmsUpdate.BwMineCollectorVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwUserBattleStatisticsVOUpdateJMS"
+              class="com.bw.application.jmsUpdate.BwUserBattleStatisticsVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwUserCharacterVOUpdateJMS" class="com.bw.application.jmsUpdate.BwUserCharacterVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwUserMapDataVOUpdateJMS" class="com.bw.application.jmsUpdate.BwUserMapDataVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwUserSpellVOUpdateJMS" class="com.bw.application.jmsUpdate.BwUserSpellVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.uservo.period.time}" />
+        </bean>
+        <bean id="BwBarrackVOUpdateJMS" class="com.bw.application.jmsUpdate.BwBarrackVOUpdateJMS"
+              init-method="init">
+            <property name="senderUtil" ref="SenderUtil" />
+            <property name="period" value="${lootesserver.barrackvo.period.time}" />
+        </bean>
+
+
+        <!-- 用户信息添加器 结束 -->
+        <bean id="actionLog" class="com.bw.log.ActionLog">
+            <property name="senderUtil" ref="SenderUtil" />
+        </bean>
+    </beans>
+    
+</beans>

@@ -1,0 +1,22 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "UserRegisterInfo";
+
+message UserRegisterRequest
+{
+	
+		required string	mailAddress =1;//Mail地址
+		required string	nickName = 2 ;//昵称
+		required int32	screenWidth=3;//屏幕宽
+		required int32	screenHeight =4;//屏幕高
+		required string	language =5;//所用语言
+		required string	machineNum=6;//机器码(检测数据是否迁移)
+}
+
+message UserRegisterResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	info = 2;//系统消息
+}

@@ -1,0 +1,25 @@
+package com.powernpc.active;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
+
+import com.powernpc.net.AppContext;
+
+public class Server
+{
+  private Logger logger = Logger.getLogger(getClass());
+
+  public Server()
+  {
+    DOMConfigurator.configure("config/log4j.xml");
+    AppContext appContext = AppContext.getInstance();
+    MinaServer mina = (MinaServer)appContext.getApplicationContext().getBean("minaServer");
+    mina.start();
+    this.logger.info("服务器已经启动!");
+  }
+
+  public static void main(String[] args)
+  {
+    new Server();
+  }
+}

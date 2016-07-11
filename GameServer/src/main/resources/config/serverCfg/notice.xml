@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans>
+        <!-- 通告 -->
+        <bean name="_notice" class="com.commonSocket.net.notice.support.CSBusyStatusNotice">
+            <!-- 双端空闲最大次数 -->
+            <property name="bothIdleCount">
+                <value>1</value>
+            </property>
+		
+            <!-- 写端空闲最大次数 -->
+            <property name="readerIdleCount">
+                <value>0</value>
+            </property>
+		
+            <!-- 读端空闲最大次数 -->
+            <property name="writerIdleCount">
+                <value>0</value>
+            </property>
+        </bean>
+    </beans>
+    
+</beans>
+

@@ -1,0 +1,15 @@
+package message;
+option java_package = "com.powernpc.net";
+option java_outer_classname ="IMessage";
+message PNPCMessage
+{
+required bytes msgHead = 1;
+required bytes msgBody = 2;
+}
+message Head
+{
+required int32 commandId = 1;
+required sint64 checkSum = 2;
+required int64 sequence = 3 [default=0];
+optional bool isHttp = 4 [default=false];
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    <beans>
+        <bean id="messageParser" factory-method="getInstance" class="com.commonSocket.net.codec.message.DefaultMessageParser" />
+
+        <bean id="protocolCodecFactory" class="com.commonSocket.net.codec.demux.DefaultDemuxingProtocolCodecFactory" />
+
+        <bean id="actionFactory" class="com.commonSocket.net.action.support.DefaultActionFactory" />
+	
+        <bean id="noticeFactory" class="com.commonSocket.net.notice.support.DefaultNoticeFactory" />
+        <bean id="actionDispatcher" class="com.commonSocket.net.action.support.DefaultActionDispatcher">
+            <property name="filterChainFactory">
+                <ref bean="filterChainFactory" />
+            </property>
+            <property name="actionFactory">
+                <ref bean="actionFactory" />
+            </property>
+        </bean>
+
+        <bean id="noticeDispatcher" class="com.commonSocket.net.notice.support.DefaultNoticeDispatcher">
+            <property name="filterChainFactory">
+                <ref bean="filterChainFactory" />
+            </property>
+            <property name="noticeFactory">
+                <ref bean="noticeFactory" />
+            </property>
+        </bean>
+
+        <bean id="minaIoHandler" class="com.commonSocket.net.codec.demux.DefaultMinaIoHandler">
+            <property name="actionDispatcher">
+                <ref local="actionDispatcher" />
+            </property>
+
+            <property name="noticeDispatcher">
+                <ref local="noticeDispatcher" />
+            </property>
+
+            <property name="onlineManage">
+                <ref bean="onlineManage" />
+            </property>
+        </bean>
+
+    </beans>
+

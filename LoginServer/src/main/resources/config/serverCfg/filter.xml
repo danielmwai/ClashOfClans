@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    
+    
+    <beans>
+        <bean id="onlineManage"
+              class="com.commonSocket.net.onlinemanage.support.DefaultOnlineManage"
+              init-method="start" destroy-method="stop">
+        </bean>
+
+        <bean id="commandFilter" class="com.commonSocket.net.filter.support.CommandCollectFilter"
+              init-method="init" destroy-method="destroy">
+            <property name="destinationName">
+                <value>topic/</value>
+            </property>
+        </bean>
+        <bean id="capabilityMonitor" class="com.commonSocket.net.filter.support.CapabilityMonitor"
+              init-method="init" destroy-method="destroy">
+            <property name="interval">
+                <value>10000</value>
+            </property>
+            <property name="onlineManage">
+                <ref bean="onlineManage" />
+            </property>
+        </bean>
+        <bean id="filterChainFactory"
+              class="com.commonSocket.net.filter.support.DefaultFilterChainFactory">
+            <property name="filterList">
+                <list>
+                    <ref local="capabilityMonitor" />
+                    <ref local="commandFilter" />
+                </list>
+            </property>
+        </bean>
+    </beans>
+

@@ -1,0 +1,16 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="UploadBattleResultPVE";
+message UploadBattleResultPVERequest
+{
+	required	string	mailAddress=1;
+	optional	int32	golden_count=2;
+	optional	int32	elixir_count=3;
+	optional	int32	star_percent=4;
+    optional	int32	pvp_mark=5;
+}
+message UploadBattleResultPVEResponse
+{
+	optional sint32 result = 1[default=0];
+	optional string info = 2;	
+}

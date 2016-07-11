@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aslan-app>
+    <action-map>
+        <!-- 登录模块 -->
+        <action name="22000" bean="heartBeatAction" />
+								
+    </action-map>
+</aslan-app>

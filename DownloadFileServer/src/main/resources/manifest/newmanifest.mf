@@ -1,0 +1,6 @@
+#Server resources manifest.
+#Wed Jun 20 11:16:14 CST 2012
+/d\:/aa/1002/1=1.0
+/d\:/aa/1002/123=1.0
+/lua/BattleFormula.lua=1.0
+/lua/BattleEnterFormula.lua=1.0

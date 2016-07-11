@@ -1,0 +1,22 @@
+package message;
+option java_package = "com.bw.application.message";
+option java_outer_classname ="ProduceSoldierMessage";
+message ProduceSoldiersRequest
+{
+required string	mailAddress=1;
+repeated ProduceSoldiers soldiersList=2;
+	message ProduceSoldiers{
+	optional int32	character_id=1;
+	optional int32	character_level=2;
+	optional int32	produce_count=3;
+	optional	int32	index=4;
+	optional	int32	uuid=5;
+	}
+	
+}
+message ProduceSoldiersResponse
+{
+	optional	sint32	result=1;
+	optional	string	info=2;
+
+}

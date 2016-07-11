@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+    
+    
+    <beans>
+        <!-- 用户模块 ACTION -->
+        <bean name="userLoginAction" class="com.bw.application.action.UserLoginAction">
+            <property name="channelManager" ref="channelManager"></property>
+            <property name="appConfig" ref="appConfig"></property>
+            <property name="userManager" ref="userManager"></property>	
+        </bean>
+        <bean name="registerChannelAction" class="com.bw.application.action.RegisterChannelAction">
+            <property name="channelManager" ref="channelManager"></property>
+        </bean>
+        <bean name="userRegisterAction"
+              class="com.bw.application.action.UserRegisterAction">
+            <property name="manager" ref="userManager"></property>
+        </bean>
+    </beans>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

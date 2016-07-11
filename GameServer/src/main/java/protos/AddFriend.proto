@@ -1,0 +1,22 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "AddFriend";
+
+message AddFriendRequest
+{
+
+	required string	mailAddress = 1;// mailAddress
+	required string	friendMailAddress = 2;// 好友mailAddress
+
+	
+	
+}
+
+message AddFriendResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	sysinfo = 2;//系统消息
+	
+}

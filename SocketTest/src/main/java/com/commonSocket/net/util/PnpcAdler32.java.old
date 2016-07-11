@@ -1,0 +1,40 @@
+package com.powernpc.net.util;
+
+public class PnpcAdler32
+{
+  private static final int MOD_ADLER = 65521;
+  private static final int NMAX = 5552;
+
+  public static long adler(byte[] data)
+  {
+    long baseA = 1L; long baseB = 0L;
+    int length = data.length;
+    int i = 0;
+    while (length > 0) {
+      int tlen = length > 5552 ? 5552 : length;
+      length -= tlen;
+      do {
+        baseA += data[(i++)];
+        baseB += baseA;
+        tlen--; } while (tlen > 0);
+
+      baseA %= 65521L;
+      baseB %= 65521L;
+    }
+
+    return baseB << 16 | baseA;
+  }
+
+  public static long adler32(byte[] data) {
+    int length = data.length;
+    long adler = 1L;
+    long baseA = adler & 0xFFFF;
+    long baseB = adler >> 16 & 0xFFFF;
+
+    for (int i = 0; i < length; i++) {
+      baseA = (baseA + data[i]) % 65521L;
+      baseB = (baseA + baseB) % 65521L;
+    }
+    return (baseB << 16) + baseA;
+  }
+}

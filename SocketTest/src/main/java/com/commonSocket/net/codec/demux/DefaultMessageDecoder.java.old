@@ -1,0 +1,109 @@
+package com.powernpc.net.codec.demux;
+
+import com.powernpc.net.IMessage;
+import com.powernpc.net.IMessage.Head;
+import com.powernpc.net.IMessage.PNPCMessage;
+import com.powernpc.net.util.PnpcAdler32;
+import com.test.application.message.UserLoginInfo.UserLoginRequest;
+
+import java.io.IOException;
+import org.apache.log4j.Logger;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolDecoderOutput;
+import org.apache.mina.filter.codec.demux.MessageDecoder;
+import org.apache.mina.filter.codec.demux.MessageDecoderResult;
+
+public class DefaultMessageDecoder
+  implements MessageDecoder
+{
+  private Logger logger = Logger.getLogger(getClass());
+
+  public MessageDecoderResult decodable(IoSession session, IoBuffer in)
+  {
+    int remaining = in.remaining();
+
+    if (remaining <= 0) {
+      return MessageDecoderResult.NOT_OK;
+    }
+    int length =remaining;
+    //暂时先把获取字节流长度的in.get()注释掉 length可以通过in.remaining() 或者in.limit() 来获取  开始
+//    int length = in.get();
+//    if (remaining < length) {
+//      return MessageDecoderResult.NOT_OK;
+//    }
+  //暂时先把获取字节流长度的in.get()注释掉 length可以通过in.remaining() 或者in.limit() 来获取 结束
+    try
+    {
+    	//11111111111
+//    	 byte[] data = new byte[27];
+//         in.get(data);
+//         IMessage.PNPCMessage message = IMessage.PNPCMessage.parseFrom(data);
+//         IMessage.Head head = IMessage.Head.parseFrom(message.getMsgHead());
+//   		UserLoginRequest response= UserLoginRequest.parseFrom(message.getMsgBody());
+//   	StringBuffer sb = new StringBuffer();
+//   	if (head.hasCommandId())
+//   	sb.append("==CommandId===" +head.getCommandId() + "\n");
+//   	if (head.hasIsHttp())
+//   	sb.append("==IsHttp===" +head.getIsHttp() + "\n");
+//   	if (head.hasSequence())
+//   	sb.append("==seq===" + head.getSequence() + "\n");
+//   	if (head.hasCheckSum())
+//   	sb.append("==CheckSum===" + head.getCheckSum() + "\n");
+//   	if(response.hasUserName()){
+//       sb.append("==result===" + response.getUserName() + "\n");
+//   	}
+//   	if(response.hasPassword()){
+//   	    sb.append("==info===" + response.getPassword() + "\n");
+//   		}	
+//   		System.out.println("接收到的body信息:"+sb.toString());
+    	//11111111111111
+      byte[] data = new byte[length];
+      in.get(data);
+      IMessage.PNPCMessage message = IMessage.PNPCMessage.parseFrom(data);
+      IMessage.Head head = IMessage.Head.parseFrom(message.getMsgHead());
+      if ((head.getCommandId() <= 0) || (head.getCommandId() > 99999)) {
+        return MessageDecoderResult.NOT_OK;
+      }
+      session.setAttribute("http", Boolean.valueOf(head.getIsHttp()));
+      //用于检测消息头里面给的长度和 消息体里面的长度是否相等
+            byte[] b = message.getMsgBody().toByteArray();
+//            long CheckSum = PnpcAdler32.adler32(b);
+            if (head.getCheckSum() != b.length) {
+    	        if (this.logger.isDebugEnabled()) {
+    	          this.logger.debug("Head's checkSum[" + head.getCheckSum() + "] != data's checkSum[" + b.length + "] error!");
+//    	          this.logger.debug("Head's checkSum[" + head.getCheckSum() + "] != data's checkSum[" + CheckSum + "] error!");
+    	       }
+               return MessageDecoderResult.NOT_OK;
+             }
+      return MessageDecoderResult.OK;
+    } catch (IOException ex) {
+      return MessageDecoderResult.NOT_OK; } catch (Exception e) {
+    }
+    return MessageDecoderResult.NOT_OK;
+  }
+
+  public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out)
+    throws Exception
+  {
+    try
+    {
+        int remaining = in.remaining();
+//        if (remaining <= 0) {//decodable 已经判断过了
+//          return MessageDecoderResult.NOT_OK;
+//        }
+     // byte[] data = new byte[in.getInt()];
+	  byte[] data = new byte[remaining];
+      in.get(data);
+      IMessage.PNPCMessage message = IMessage.PNPCMessage.parseFrom(data);
+      out.write(message);
+      return MessageDecoderResult.OK; } catch (Exception e) {
+    }
+    return MessageDecoderResult.NOT_OK;
+  }
+
+  public void finishDecode(IoSession iosession, ProtocolDecoderOutput protocoldecoderoutput)
+    throws Exception
+  {
+  }
+}

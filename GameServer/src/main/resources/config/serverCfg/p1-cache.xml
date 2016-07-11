@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    
+    <beans >
+        <bean id="propertyConfigurer" class="com.bw.cache.utils.PropertiesForJar">
+        </bean>
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+              destroy-method="close">
+            <property name="driverClass" value="${jdbc.driver}" />
+            <property name="jdbcUrl" value="${jdbc.url}" />
+            <property name="user" value="${jdbc.username}" />
+            <property name="password" value="${jdbc.password}" />
+            <property name="initialPoolSize" value="${jdbc.minPoolSize}" />
+            <property name="minPoolSize" value="${jdbc.minPoolSize}" />
+            <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+            <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+            <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+            <property name="maxIdleTimeExcessConnections"
+                      value="${jdbc.maxIdleTimeExcessConnections}" />
+        </bean>
+        <bean id="dataSourceManager" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+              destroy-method="close">
+            <property name="driverClass" value="${jdbc.driver}" />
+            <property name="jdbcUrl" value="${jdbc.manager.url}" />
+            <property name="user" value="${jdbc.username}" />
+            <property name="password" value="${jdbc.password}" />
+            <property name="initialPoolSize" value="${jdbc.minPoolSize.WGManager}" />
+            <property name="minPoolSize" value="${jdbc.minPoolSize.WGManager}" />
+            <property name="maxPoolSize" value="${jdbc.maxPoolSize.WGManager}" />
+            <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+            <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+            <property name="maxIdleTimeExcessConnections"
+                      value="${jdbc.maxIdleTimeExcessConnections}" />
+        </bean>
+        <bean id="dataSourceBank" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+              destroy-method="close">
+            <property name="driverClass" value="${jdbc.driver}" />
+            <property name="jdbcUrl" value="${jdbc.bank.url}" />
+            <property name="user" value="${jdbc.username}" />
+            <property name="password" value="${jdbc.password}" />
+            <property name="initialPoolSize" value="${jdbc.minPoolSize.bank}" />
+            <property name="minPoolSize" value="${jdbc.minPoolSize.bank}" />
+            <property name="maxPoolSize" value="${jdbc.maxPoolSize.bank}" />
+            <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+            <property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+            <property name="maxIdleTimeExcessConnections"
+                      value="${jdbc.maxIdleTimeExcessConnections}" />
+        </bean>	
+
+
+        <bean id="cityMemCachedClient" class="com.bw.cache.CityMemCachedClient">
+            <property name="memcachedClient" ref="memcachedClient" />
+        </bean>
+        <bean id="memcachedClient" name="memcachedClient"
+              class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean"
+              destroy-method="shutdown">
+            <property name="servers">
+                <!-- 主备用逗号分割且为一组 不同的组用空格分割 -->
+                <value>${memcached.server1}</value>
+            </property>
+            <property name="connectionPoolSize" value="1"></property>
+            <!-- Distributed strategy 一致性哈希 -->
+            <property name="sessionLocator">
+                <bean
+                    class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator">
+                </bean>
+            </property>
+            <!-- Serializing transcoder -->
+            <property name="transcoder">
+                <bean
+                    class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+            </property>
+            <!-- ByteBuffer allocator -->
+            <property name="bufferAllocator">
+                <bean
+                    class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator">
+                </bean>
+            </property>
+            <!-- Failure mode -->
+            <property name="failureMode" value="false" />
+        </bean>
+
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource">
+                <ref bean="dataSource" />
+            </property>
+        </bean>
+        <bean id="jdbcTemplateBank" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource">
+                <ref bean="dataSourceBank" />
+            </property>
+        </bean>	
+	
+        <bean id="jdbcTemplateManager" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource">
+                <ref bean="dataSourceManager" />
+            </property>
+        </bean>
+
+        <!-- 用户模块 start -->
+        <bean id="BwUserDaoImpl" class="com.bw.dao.springdao.BwUserDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwUserCacheDAOImpl" class="com.bw.dao.cachedao.BwUserCacheDAOImpl">
+            <property name="bwUserDaoImpl" ref="BwUserDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>
+        <!-- 用户模块 end -->
+        <!-- 用户角色 star -->
+        <bean id="BwUserCharacterDaoImpl" class="com.bw.dao.springdao.BwUserCharacterDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwUserCharacterCacheDAOImpl" class="com.bw.dao.cachedao.BwUserCharacterCacheDAOImpl">
+            <property name="bwUserCharacterDaoImpl" ref="BwUserCharacterDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	
+        <!-- 用户角色 end -->
+	
+        <!-- 用户建筑位置 开始 -->
+        <bean id="BwUserMapDataDaoImpl" class="com.bw.dao.springdao.BwUserMapDataDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwUserMapDataCacheDAOImpl" class="com.bw.dao.cachedao.BwUserMapDataCacheDAOImpl">
+            <property name="bwUserMapDataDaoImpl" ref="BwUserMapDataDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	
+        <!-- 用户建筑位置 结束 -->
+
+        <!-- 每个建筑的具体信息  开始 -->
+        <!-- 营地 和工会 -->
+        <bean id="BwClansCharacterRequestDaoImpl" class="com.bw.dao.springdao.BwClansCharacterRequestDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwClansCharacterRequestCacheDAOImpl" class="com.bw.dao.cachedao.BwClansCharacterRequestCacheDAOImpl">
+            <property name="bwClansCharacterRequestDaoImpl" ref="BwClansCharacterRequestDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	  
+        <!-- 兵营  -->		
+        <bean id="BwBarrackDaoImpl" class="com.bw.dao.springdao.BwBarrackDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwBarrackCacheDAOImpl" class="com.bw.dao.cachedao.BwBarrackCacheDAOImpl">
+            <property name="bwBarrackDaoImpl" ref="BwBarrackDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	  
+        <!-- 金矿和 药水收集单位 -->
+        <bean id="BwMineCollectorDaoImpl" class="com.bw.dao.springdao.BwMineCollectorDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate" />
+            </property>
+        </bean>
+        <bean id="BwMineCollectorCacheDAOImpl" class="com.bw.dao.cachedao.BwMineCollectorCacheDAOImpl">
+            <property name="bwMineCollectorDaoImpl" ref="BwMineCollectorDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	
+        <!-- 金矿和药水 开始 -->
+        <bean id="BwMineCollectorAllDaoImpl" class="com.bw.dao.springdao.BwMineCollectorAllDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>
+        <bean id="BwMineCollectorAllCacheDAOImpl" class="com.bw.dao.cachedao.BwMineCollectorAllCacheDAOImpl">
+            <property name="bwMineCollectorAllDaoImpl" ref="BwMineCollectorAllDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	  	 
+        <!-- 金矿和药水 结束 -->  	 
+	
+        <!-- 用户魔法 开始 -->
+        <bean id="BwUserSpellDaoImpl" class="com.bw.dao.springdao.BwUserSpellDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>
+        <bean id="BwUserSpellCacheDAOImpl" class="com.bw.dao.cachedao.BwUserSpellCacheDAOImpl">
+            <property name="bwUserSpellDaoImpl" ref="BwUserSpellDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	  
+        <!-- 用户魔法 结束 -->
+	
+        <!-- 用户魔法 开始 -->
+        <bean id="BwSpellDaoImpl" class="com.bw.dao.springdao.BwSpellDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>
+        <bean id="BwSpellCacheDAOImpl" class="com.bw.dao.cachedao.BwSpellCacheDAOImpl">
+            <property name="bwSpellDaoImpl" ref="BwSpellDaoImpl"></property>
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	  
+        <!-- 用户魔法 结束 -->
+	
+	
+	
+        <!-- 每个建筑的具体信息  结束 -->
+        <!-- 用户战斗状态 开始 -->
+        <bean id="BattleLineDAOImpl" class="com.bw.dao.cachedao.BattleLineDAOImpl">
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	      
+        <!-- 用户战斗状态 结束 -->
+        <!-- 用户战斗表 开始 -->
+    
+        <bean id="BwBattleDaoImpl" class="com.bw.dao.springdao.BwBattleDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>    
+        <bean id="BwBattleCacheDAOImpl" class="com.bw.dao.cachedao.BwBattleCacheDAOImpl">
+            <property name="bwBattleDaoImpl" ref="BwBattleDaoImpl" />			    
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	
+        <!-- 用户战斗表 结束 -->
+        <!-- 用户战斗统计表 开始 -->
+        <bean id="BwUserBattleStatisticsDaoImpl" class="com.bw.dao.springdao.BwUserBattleStatisticsDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>    
+        <bean id="BwUserBattleStatisticsCacheDAOImpl" class="com.bw.dao.cachedao.BwUserBattleStatisticsCacheDAOImpl">
+            <property name="bwUserBattleStatisticsDaoImpl" ref="BwUserBattleStatisticsDaoImpl" />			    
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	    
+    
+        <!-- 用户战斗统计表 结束 -->
+        <!-- 数据库基础信息模块 开始 -->
+        <bean id="DBBaseInforDAOImpl" class="com.common.BaseInfor.DAO.DBBaseInforDAOImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplateManager"/>
+            </property>
+        </bean>	
+        <!-- 数据库基础信息模块 结束 -->	
+        <!-- 支付开始 -->
+        <bean id="BwUserBankDaoImpl" class="com.bw.dao.springdao.BwUserBankDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplateBank"/>
+            </property>
+        </bean>    
+        <bean id="BwUserBankCacheDAOImpl" class="com.bw.dao.cachedao.BwUserBankCacheDAOImpl">
+            <property name="bwUserBankDaoImpl" ref="BwUserBankDaoImpl" />			    
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	
+			
+        <bean id="BwUserBankLogDaoImpl" class="com.bw.dao.springdao.BwUserBankLogDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplateBank"/>
+            </property>
+        </bean>    
+        <bean id="BwUserBankLogCacheDAOImpl" class="com.bw.dao.cachedao.BwUserBankLogCacheDAOImpl">
+            <property name="bwUserBankLogDaoImpl" ref="BwUserBankLogDaoImpl" />			    
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>				
+        <!-- 支付结束 -->
+        <!-- 平台用户数据 开始 -->
+        <bean id="BwPlantUserDaoImpl" class="com.bw.dao.springdao.BwPlantUserDaoImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplate"/>
+            </property>
+        </bean>    
+        <bean id="BwPlantUserCacheDAOImpl" class="com.bw.dao.cachedao.BwPlantUserCacheDAOImpl">
+            <property name="bwPlantUserDaoImpl" ref="BwPlantUserDaoImpl" />			    
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>	   	
+        <!-- 平台用户数据 结束 -->
+        <!-- 常用功能 开始 -->
+        <bean id="CommonCacheDAOImpl" class="com.bw.dao.cachedao.CommonCacheDAOImpl">
+            <property name="cache" ref="cityMemCachedClient" />
+        </bean>
+        <!-- 常用功能 结束 -->
+        <!-- 黑名单 开始 -->
+        <bean id="BwBlacklistCacheDAOImpl" class="com.bw.dao.cachedao.BwBlacklistCacheDAOImpl">
+            <property name="bwBlacklistDaoImpl" ref="BwBlacklistDaoImpl">
+            </property>
+            <property name="cache" ref="cityMemCachedClient"/>
+        </bean>
+        <bean id="BwBlacklistDaoImpl" class="com.bw.dao.springdao.BwBlacklistDaoImpl">
+            <property name="jdbcTemplate" ref="jdbcTemplateManager"/>
+        </bean>
+        <!-- 黑名单 结束-->
+    </beans>
+    
+</beans>
+

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${jms.brokerUrl}" />
+    </bean>
+    <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+        <constructor-arg index="0" ref="jmsConnectionFactory" />
+    </bean>
+    <!-- 配置JMS模版 -->
+    <bean id="jmsTemplateQueue" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="pubSubDomain" value="false" />
+    </bean>
+
+
+    <!-- 新增项目 开始 -->
+    <!-- 更新业务逻辑操作 -->
+    <bean id="BwBattleVOWriter" class="com.bw.service.BwBattleVOWriter">
+        <property name="bwBattleDaoImpl" ref="BwBattleDaoImpl"></property>
+        <property name="startTime" value="${BwBattleVOWriter.update.start.time}" />
+        <property name="beishu" value="${BwBattleVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwBattleVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwBattleVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwBarrackVOWriter" class="com.bw.service.BwBarrackVOWriter"
+          init-method="init">
+        <property name="bwBarrackDaoImpl" ref="BwBarrackDaoImpl"></property>
+        <property name="startTime" value="${BwBarrackVOWriter.update.start.time}" />
+        <property name="beishu" value="${BwBarrackVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwBarrackVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwBarrackVOWriter.batch.update.period.second}" />
+    </bean>
+
+    <bean id="BwMineCollectorAllVOWriter" class="com.bw.service.BwMineCollectorAllVOWriter"
+          init-method="init">
+        <property name="bwMineCollectorAllDaoImpl" ref="BwMineCollectorAllDaoImpl"></property>
+        <property name="startTime"
+                  value="${BwMineCollectorAllVOWriter.update.start.time}" />
+        <property name="beishu"
+                  value="${BwMineCollectorAllVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwMineCollectorAllVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwMineCollectorAllVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwMineCollectorVOWriter" class="com.bw.service.BwMineCollectorVOWriter"
+          init-method="init">
+        <property name="bwMineCollectorDaoImpl" ref="BwMineCollectorDaoImpl"></property>
+        <property name="startTime" value="${BwMineCollectorVOWriter.update.start.time}" />
+        <property name="beishu"
+                  value="${BwMineCollectorVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwMineCollectorVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwMineCollectorVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwUserBattleStatisticsVOWriter" class="com.bw.service.BwUserBattleStatisticsVOWriter"
+          init-method="init">
+        <property name="bwUserBattleStatisticsDaoImpl" ref="BwUserBattleStatisticsDaoImpl"></property>
+        <property name="startTime"
+                  value="${BwUserBattleStatisticsVOWriter.update.start.time}" />
+        <property name="beishu"
+                  value="${BwUserBattleStatisticsVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwUserBattleStatisticsVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwUserBattleStatisticsVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwUserCharacterVOWriter" class="com.bw.service.BwUserCharacterVOWriter"
+          init-method="init">
+        <property name="bwUserCharacterDaoImpl" ref="BwUserCharacterDaoImpl"></property>
+        <property name="startTime" value="${BwUserCharacterVOWriter.update.start.time}" />
+        <property name="beishu"
+                  value="${BwUserCharacterVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwUserCharacterVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwUserCharacterVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwUserMapDataVOWriter" class="com.bw.service.BwUserMapDataVOWriter"
+          init-method="init">
+        <property name="bwUserMapDataDaoImpl" ref="BwUserMapDataDaoImpl"></property>
+        <property name="startTime" value="${BwUserMapDataVOWriter.update.start.time}" />
+        <property name="beishu"
+                  value="${BwUserMapDataVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwUserMapDataVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwUserMapDataVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwUserSpellVOWriter" class="com.bw.service.BwUserSpellVOWriter"
+          init-method="init">
+        <property name="bwUserSpellDaoImpl" ref="BwUserSpellDaoImpl"></property>
+        <property name="startTime" value="${BwUserSpellVOWriter.update.start.time}" />
+        <property name="beishu" value="${BwUserSpellVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwUserSpellVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond"
+                  value="${BwUserSpellVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwUserVOWriter" class="com.bw.service.BwUserVOWriter"
+          init-method="init">
+        <property name="bwUserDaoImpl" ref="BwUserDaoImpl"></property>
+        <property name="startTime" value="${BwUserVOWriter.update.start.time}" />
+        <property name="beishu" value="${BwUserVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount"
+                  value="${BwUserVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond" value="${BwUserVOWriter.batch.update.period.second}" />
+    </bean>
+    <bean id="BwLogVOWriter" class="com.bw.service.BwLogVOWriter">
+        <property name="bwLogDaoImpl" ref="bwLogDaoImpl"></property>
+        <property name="startTime" value="${BwLogVOWriter.update.start.time}" />
+        <property name="beishu" value="${BwLogVOWriter.one.time.update.count}" />
+        <property name="perRunUpdateCount" value="${BwLogVOWriter.update.get.queue.poll.count}" />
+        <property name="periodSecond" value="${BwLogVOWriter.batch.update.period.second}" />
+    </bean>
+    <!-- 信息接收者 接收者要实现接口IReceiverUtil 且更改下面的CLASS 路径 -->
+    <bean id="iReceiverUtil" class="com.bw.receiverImpl.ReceiverUtilImpl">
+        <property name="bwBattleVOWriter" ref="BwBattleVOWriter" />
+        <property name="bwMineCollectorAllVOWriter" ref="BwMineCollectorAllVOWriter" />
+        <property name="bwMineCollectorVOWriter" ref="BwMineCollectorVOWriter" />
+        <property name="bwUserBattleStatisticsVOWriter" ref="BwUserBattleStatisticsVOWriter" />
+        <property name="bwUserCharacterVOWriter" ref="BwUserCharacterVOWriter"></property>
+        <property name="bwUserMapDataVOWriter" ref="BwUserMapDataVOWriter"></property>
+        <property name="bwUserSpellVOWriter" ref="BwUserSpellVOWriter"></property>
+        <property name="bwUserVOWriter" ref="BwUserVOWriter" />
+
+        <property name="bwBarrackVOWriter" ref="BwBarrackVOWriter" />
+        <property name="battleMaxCount" value="${ireceiverutil.battle.max.count}" />
+        <property name="mineCollectorAllMaxCount"
+                  value="${ireceiverutil.mine.collector.all.max.count}" />
+        <property name="mineCollectorMaxCount" value="${ireceiverutil.mine.collector.max.count}" />
+        <property name="battleStatisticsMaxCount" value="${ireceiverutil.battle.statiscs.max.count}" />
+        <property name="userCharacterMaxCount" value="${ireceiverutil.user.character.max.count}" />
+        <property name="userMapDataMaxCount" value="${ireceiverutil.user.map.data.max.count}" />
+        <property name="userSpellMaxCount" value="${ireceiverutil.user.spell.max.count}" />
+        <property name="userMaxCount" value="${ireceiverutil.user.max.count}" />
+        <property name="barrackMaxCount" value="${ireceiverutil.user.barrack.max.count}" />
+        <property name="logMaxCount" value="${ireceiverutil.log.max.count}"></property>
+    </bean>
+    <!-- 监听者 开始 -->
+    <bean id="BwBattleVOReceiverListener" class="com.bw.receiverImpl.BwBattleVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwMineCollectorAllVOReceiverListener"
+          class="com.bw.receiverImpl.BwMineCollectorAllVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwMineCollectorVOReceiverListener" class="com.bw.receiverImpl.BwMineCollectorVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwUserBattleStatisticsVOReceiverListener"
+          class="com.bw.receiverImpl.BwUserBattleStatisticsVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwUserCharacterVOReceiverListener" class="com.bw.receiverImpl.BwUserCharacterVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwUserMapDataVOReceiverListener" class="com.bw.receiverImpl.BwUserMapDataVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwUserSpellVOReceiverListener" class="com.bw.receiverImpl.BwUserSpellVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwUserVOReceiverListener" class="com.bw.receiverImpl.BwUserVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwBarrackVOReceiverListener" class="com.bw.receiverImpl.BwBarrackVOReceiverListener">
+        <property name="iReceiverUtil" ref="iReceiverUtil" />
+    </bean>
+    <bean id="BwLogVOReceiveListener" class="com.bw.receiverImpl.BwLogVOReceiveListener">
+        <property name="receiverUtil" ref="iReceiverUtil"></property>
+    </bean>
+    <!-- 监听者 结束 -->
+    <bean id="jmsExceptionListener" class="com.bw.jms.receiverBase.JmsExceptionListener">
+
+    </bean>
+    <!-- 接收容器开始 -->
+    <bean class="com.bw.receiverContainer.BwBattleVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.UserBattleVO.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwBattleVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwMineCollectorAllVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.UserMineCollectorAll.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwMineCollectorAllVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwMineCollectorVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.UserMineCollector.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwMineCollectorVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwUserBattleStatisticsVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.UserBattleStatistics.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwUserBattleStatisticsVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwUserCharacterVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.userCharacter.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwUserCharacterVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwUserMapDataVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.userMapData.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwUserMapDataVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwUserSpellVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.userSpellVO.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwUserSpellVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwUserVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.userInfo.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwUserVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwBarrackVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.BwBarrackVO.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwBarrackVOReceiverListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+    <bean class="com.bw.receiverContainer.BwLogVOContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="${jms.BwLogVO.queue}" />
+        <property name="pubSubDomain" value="false" />
+        <property name="concurrentConsumers" value="${jms.consumer.num}" />
+        <property name="messageListener" ref="BwLogVOReceiveListener" />
+        <property name="exceptionListener" ref="jmsExceptionListener" />
+    </bean>
+
+    <!-- 新增项目 结束 -->
+</beans>

@@ -1,0 +1,50 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "RefreshData";
+
+message RefreshDataRequest
+{
+
+	optional int32	islandId=1;//	玩家主岛ID
+	optional int32	roleLevel=2;//玩家等级
+	optional int32	roleExp=3;//	玩家经验
+	optional int32	roleGoldenCount=4;//	玩家金币
+	repeated IslandInfo	islandList=5;//	浮岛信息
+	repeated BuildingInfo	buildingList=6;//	建筑物信息
+	repeated CropInfo	cropList=7;//	农作物信息
+
+	message IslandInfo
+	{
+		optional	int32	islandId=1;//	浮岛id
+		optional	int32	gridOpintx=2;//	格子x坐标点
+		optional	int32	gridOpinty=3;//	格子y坐标点
+
+	}
+
+	message BuildingInfo
+	{
+		optional	int32	pointx=1;//	X点坐标
+		optional	int32	pointy=2;//	Y点坐标
+		optional	uint64	buildingUuid=3;//	建筑物的唯一id
+		optional	int32	buildingId=4;//	建筑ID
+		optional	int32	status=5;//	建筑物状态 
+
+	}
+
+	message CropInfo
+	{
+		optional	int32	cropId=1;//	农作物id
+		optional	uint64	buildingUuid=2;//	所在农场的uuid
+		optional	int32	cropStatus=3;//	农作物的状态
+
+	}
+	
+}
+
+message RefreshDataResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	info = 2;//系统消息
+}

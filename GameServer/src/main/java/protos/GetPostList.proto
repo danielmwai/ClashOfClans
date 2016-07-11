@@ -1,0 +1,30 @@
+package message;
+
+option java_package = "com.cy.application.message";
+
+option java_outer_classname = "GetPostList";
+
+message GetPostListRequest
+{
+
+	required string mailId = 1;//邮箱地址
+	
+	
+}
+
+message GetPostListResponse
+{
+	optional sint32	result = 1;//异常状态码表
+	optional string	info = 2;//系统消息
+	repeated Post postList = 3;//邮箱列表
+
+	message Post
+	{
+		optional int32	mailType = 1;//1-好友请求;2-照料请求;3-好友请求反馈;4-照料邀请反馈;5-照顾请求反馈;6-称赞反馈;7-农作物复活反馈;8-系统邮件
+		optional string	from = 2;//发信人
+		optional string	mailObject = 3;//邮件主题
+		optional string	mailContent = 4;//邮件内容
+		optional bool	isTop = 5;//true 置顶 false 普通
+		optional int32	praiseCount = 6;//获取赞的数量（哪个CD时间）
+	}
+}

@@ -1,0 +1,13 @@
+package message;
+option java_package = "com.test.application.message";
+option java_outer_classname ="UserLoginInfo";
+message UserLoginRequest
+{
+required string userName = 1;
+required string password = 2;
+}
+message UserLoginResponse
+{
+optional sint32 result = 1;
+optional string info = 2;
+}

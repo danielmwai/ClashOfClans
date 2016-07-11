@@ -1,0 +1,8 @@
+<message>
+    <!-- 资源上传模块 -->
+    <entry id="305" messageName="UploadBattleFlowRequest" />
+    <entry id="40305" messageName="UploadBattleFlowResponse" />
+    <!-- 资源下载模块 -->
+    <entry id="306" messageName="IoFileRequest" />
+    <entry id="40306" messageName="IoFileResponse" />	
+</message>
