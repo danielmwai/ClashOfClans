@@ -24,7 +24,6 @@ tomcat
 *.svn
 # Maven 
 target/
-log/
 *.directory
 *.git
 # IntelliJ project files 
