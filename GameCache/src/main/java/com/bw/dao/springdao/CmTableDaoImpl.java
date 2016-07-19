@@ -68,7 +68,9 @@ public class CmTableDaoImpl extends BaseSpringDao implements CmTableDao {
 
     @Override
     public List<CityServerChannleVO> initAllServerChannle() {
-        final String sql = "select * from csgame_channle";
+       // final String sql = "select * from csgame_channle";  # Guessing  table changed to  bw_game_channle
+        final String sql = "select * from bw_game_channle";
+
         return (List<CityServerChannleVO>) this.getJdbcTemplate().query(sql, new RowMapper() {
             @Override
             public CityServerChannleVO mapRow(final ResultSet rs, final int arg1) throws SQLException {
@@ -80,6 +82,7 @@ public class CmTableDaoImpl extends BaseSpringDao implements CmTableDao {
                 channleVO.setServiceInterface(rs.getString("service_interface"));
                 channleVO.setServiceUrl(rs.getString("service_url"));
                 channleVO.setUserCount(rs.getInt("user_count"));
+
                 return channleVO;
             }
         });

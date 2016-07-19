@@ -29,6 +29,12 @@
             <version>5.0.1-RELEASE</version>
         </dependency>
         
+         <dependency>
+            <groupId>com.gamecache</groupId>
+            <artifactId>GameCache</artifactId>
+            <version>5.0.1-RELEASE</version>
+        </dependency>
+        
         <!--        <dependency>
             <groupId>com.dominicsayers</groupId>
             <artifactId>dominicsayers-isEmail</artifactId>

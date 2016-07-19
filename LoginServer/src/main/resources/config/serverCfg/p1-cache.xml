@@ -110,4 +110,10 @@
         <property name="jdbcTemplate" ref="jdbcTemplateManager" />
 		
     </bean>
+    <!-- ADDING  BEAN  DBBaseInforDAOImpl -->
+    <bean id="DBBaseInforDAOImpl" class="com.common.BaseInfor.DAO.DBBaseInforDAOImpl">
+            <property name="jdbcTemplate">
+                <ref bean="jdbcTemplateManager"/>
+            </property>
+        </bean>	
 </beans>

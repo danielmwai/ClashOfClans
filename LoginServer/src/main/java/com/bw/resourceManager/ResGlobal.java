@@ -51,6 +51,7 @@ public class ResGlobal {
     }
 
     public void init() {
+        log.info("Start initialization basic information");
         log.info("初始化基础信息 开始................");
         //建筑基础信息
         bwBuildingVOMap = new ConcurrentHashMap<Long, BwBuildingVO>();
@@ -126,10 +127,12 @@ public class ResGlobal {
             }
         } else {
             log.error("此地方需要获取文件服务器列表");
+            log.error("This place needs to get a list of the file server");
         }
 
         //
         log.info("初始化基础信息 结束................");
+        log.info("The initialization basic information");
     }
 
 }
