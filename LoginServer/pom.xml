@@ -29,11 +29,6 @@
             <version>5.0.1-RELEASE</version>
         </dependency>
         
-         <dependency>
-            <groupId>com.gamecache</groupId>
-            <artifactId>GameCache</artifactId>
-            <version>5.0.1-RELEASE</version>
-        </dependency>
         
         <!--        <dependency>
             <groupId>com.dominicsayers</groupId>
@@ -420,6 +415,10 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                                     <resource>config/jdbc.properties</resource>
                                     <file>config/jdbc.properties</file>
+                                    <resource>config/properties/appConfig.properties</resource>
+                                    <file>config/properties/appConfig.properties</file>
+                                    <resource>config/properties/pathConfig.properties</resource>
+                                    <file>config/properties/pathConfig.properties</file>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.handlers</resource>
